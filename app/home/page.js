@@ -3,7 +3,7 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       {/* Hero */}
       <section className="text-center py-20 bg-gradient-to-r from-blue-50 to-white">
-        <h1 className="text-5xl font-bold mb-4 text-blue-700">เคมีอาหารคุณภาพสูง</h1>
+        <h1 className="text-5xl font-bold mb-4 text-blue-700">เคมีอาหารคุณภาพสูงงงงงงงงงงงงง</h1>
         <p className="text-gray-600 mb-6">สำหรับอุตสาหกรรมและงานวิจัย</p>
         <button className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
           ดูสินค้า
