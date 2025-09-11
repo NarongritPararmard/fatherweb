@@ -1,58 +1,63 @@
-import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
 
-export async function GET(request: Request, context: any) {
-  try {
-    const categoryId = Number(context.params.id)
-    const categoryWithPosts = await prisma.category.findUnique({
-      where: { id: categoryId },
-      include: { posts: true },
-    })
-    return new Response(JSON.stringify(categoryWithPosts), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  } catch (error) {
-    return new Response(JSON.stringify({ error: (error as Error).message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  }
-}
+// export async function GET(
+//   request: Request,
+//   { params }: { params: { id: string } }
+// ) {
+//   try {
+//     const { id } = await params
+//     const categoryId = Number(id)
+//     const categoryWithPosts = await prisma.category.findUnique({
+//       where: { id: categoryId },
+//       include: {
+//         posts: true, // Include related posts in the response
+//       },
+//     })
+//     return Response.json(categoryWithPosts)
+//   } catch (error) {
+//     return new Response(error as BodyInit, {
+//       status: 500,
+//     })
+//   }
+// }
 
-export async function PUT(request: Request, context: any) {
-  try {
-    const { name } = await request.json()
-    const categoryId = Number(context.params.id)
-    const category = await prisma.category.update({
-      where: { id: categoryId },
-      data: { name },
-    })
-    return new Response(JSON.stringify(category), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  } catch (error) {
-    return new Response(JSON.stringify({ error: (error as Error).message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  }
-}
+// export async function PUT(
+//   request: Request,
+//   { params }: { params: { id: string } }
+// ) {
+//   try {
+//     const { name } = await request.json()
+//     const { id } = await params
+//     const categoryId = Number(id)
+//     const category = await prisma.category.update({
+//       where: { id: categoryId },
+//       data: { name },
+//     })
+//     return Response.json(category)
+//   } catch (error) {
+//     return new Response(error as BodyInit, {
+//       status: 500,
+//     })
+//   }
+// }
 
-export async function DELETE(request: Request, context: any) {
-  try {
-    const categoryId = Number(context.params.id)
-    const deleted = await prisma.category.delete({ where: { id: categoryId } })
-    return new Response(JSON.stringify(deleted), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  } catch (error) {
-    return new Response(JSON.stringify({ error: (error as Error).message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  }
-}
+// export async function DELETE(
+//   req: Request,
+//   { params }: { params: { id: string } }
+// ) {
+//   try {
+//     const { id } = await params
+//     const categoryId = Number(id)
+//     return Response.json(
+//       await prisma.category.delete({
+//         where: { id: categoryId },
+//       })
+//     )
+//   } catch (error) {
+//     return new Response(error as BodyInit, {
+//       status: 500,
+//     })
+//   }
+// }
