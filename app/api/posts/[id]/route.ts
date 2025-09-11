@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-type Params = Promise<{ id: string }>
+export type Params = Promise<{ id: string }>;
 
 export async function GET(
     request: Request,
