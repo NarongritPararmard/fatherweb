@@ -4,7 +4,9 @@ import React, { use, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
-const Edit = ({ params }: { params: { id: string } }) => {
+type Params = { id: string }
+
+const Edit = ({ params }: { params: Params }) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [categoryId, setCategoryId] = useState('')
