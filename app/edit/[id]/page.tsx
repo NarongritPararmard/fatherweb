@@ -4,7 +4,7 @@ import React, { use, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
-type Params = { id: string }
+type Params = Promise<{ id: string }>
 
 const Edit = ({ params }: { params: Params }) => {
   const [title, setTitle] = useState('')
@@ -12,7 +12,7 @@ const Edit = ({ params }: { params: Params }) => {
   const [categoryId, setCategoryId] = useState('')
   const [categories, setCategories] = useState([])
   const router = useRouter()
-  const { id } = params
+  const { id } = use(params)
 
   const fetchPost = async (id: string) => {
     try {
