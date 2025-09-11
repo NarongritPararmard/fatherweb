@@ -3,20 +3,20 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
+  request: Request,
+  context: { params: Record<string, string> }  // <- ใช้ Record<string, string>
 ) {
   try {
-    const categoryId = Number(params.id)
+    const categoryId = Number(context.params.id) // <- ใช้ context.params
     const categoryWithPosts = await prisma.category.findUnique({
       where: { id: categoryId },
       include: {
-        posts: true, // Include related posts in the response
+        posts: true,
       },
     })
     return Response.json(categoryWithPosts)
   } catch (error) {
-    return new Response(error as BodyInit, {
+    return new Response((error as Error).message, {
       status: 500,
     })
   }
