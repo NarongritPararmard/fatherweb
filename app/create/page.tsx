@@ -5,30 +5,37 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
 const Create = () => {
-    const [title, setTitle] = useState('')
-    const [content, setContent] = useState('')
-    const [categoryId, setCategoryId] = useState('')
-    const [categories, setCategories] = useState([])
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const [categoryId, setCategoryId] = useState('')
+  const [categories, setCategories] = useState([])
+  const [file, setFile] = useState<File | null>(null)
 
-    const router = useRouter()
-    
-    const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault()
-        try {
-            await axios.post('/api/posts', { 
-                title, 
-                content,
-                categoryId
-            })
-            router.push('/')
-        } catch (error) {
-            console.error('error', error)
-            alert('Failed to create post')
-        }
-        console.log({ title, content })
+  const router = useRouter()
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+    if (!file) return alert("Please select a file");
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("categoryId", categoryId.toString());
+    formData.append("file", file); // ส่งเป็น File object จริง
+    try {
+      await axios.post('/api/posts', formData , {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      router.push('/')
+    } catch (error) {
+      console.error('error', error)
+      alert('Failed to create post')
     }
+    console.log({ title, content })
+  }
 
-    const fetchCategories = async () => {
+  const fetchCategories = async () => {
     try {
       const response = await axios.get(`/api/categories`)
       setCategories(response.data)
@@ -87,10 +94,19 @@ const Create = () => {
           >
             <option value="">Select a category</option>
             {/* Example static categories, replace or populate dynamically */}
-            {categories.map((cat:any) => (
+            {categories.map((cat: any) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
+        </div>
+        <div>
+          <input
+            type="file"
+            name="file"
+            accept="image/*"
+            required
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
         </div>
         <div>
           <button

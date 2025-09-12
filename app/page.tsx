@@ -120,6 +120,12 @@ export default function Home() {
               >
                 Actions
               </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Image
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -148,6 +154,13 @@ export default function Home() {
                   >
                     Delete
                   </button>
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {post.imageUrl ? (
+                    <img src={post.imageUrl} alt={post.title} className="h-16 w-16 object-cover" />
+                  ) : (
+                    <span className="text-sm text-gray-500">No Image</span>
+                  )}
                 </td>
               </tr>
             ))}
