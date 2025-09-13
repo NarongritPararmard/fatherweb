@@ -16,24 +16,21 @@ import {
 
 // --- Types ---
 export interface ProductFormData {
+  id: number;
   name: string;
-  category: string;
-  price: string;
-  unit: string;
-  description: string;
-  detailedDescription: string;
-  inStock: boolean;
-  badge: string;
-  minOrder: string;
-  maxOrder: string;
-  shelfLife: string;
-  storageCondition: string;
-  origin: string;
-  certification: string[];
-  specs: string[];
-  applications: string[];
-  safetyInfo: string;
-  tags: string[];
+  chemical_formula?: string;
+  packaging?: string;
+  price?: number;
+  description?: string;
+  properties?: string;
+  characteristicsId: number;
+  origin_countryId: number;
+  categoryId: number;
+  createdAt?: Date;
+  imageUrl?: string;
+  unit?: string;
+  inStock?: boolean;
+  badge?: string;
 }
 
 export type FormErrors = Partial<Record<keyof ProductFormData, string>>;
@@ -46,24 +43,18 @@ export interface ProductPreviewProps {
 
 export default function CreateProduct() {
   const [formData, setFormData] = useState<ProductFormData>({
+    id: 0,
     name: "",
-    category: "",
-    price: "",
-    unit: "กก.",
+    chemical_formula: "",
+    packaging: "",
+    price: undefined,
     description: "",
-    detailedDescription: "",
-    inStock: true,
-    badge: "",
-    minOrder: "",
-    maxOrder: "",
-    shelfLife: "",
-    storageCondition: "",
-    origin: "",
-    certification: [],
-    specs: [""],
-    applications: [""],
-    safetyInfo: "",
-    tags: [],
+    properties: "",
+    characteristicsId: 0,
+    origin_countryId: 0,
+    categoryId: 0,
+    createdAt: undefined,
+    imageUrl: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -96,24 +87,24 @@ export default function CreateProduct() {
   ];
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
-
-    // Handle checkbox type with type narrowing
-    if (e.target instanceof HTMLInputElement && e.target.type === "checkbox") {
-      const checked = e.target.checked;
-      setFormData((prev) => ({
-        ...prev,
-        [name]: checked,
-      }));
-    } else {
-      setFormData((prev) => ({
+    setFormData((prev) => {
+      // If the field is price, convert to number or undefined
+      if (name === "price") {
+        return {
+          ...prev,
+          [name]: value === "" ? undefined : Number(value),
+        };
+      }
+      return {
         ...prev,
         [name]: value,
-      }));
-    }
-
+      };
+    });
     if (errors[name as keyof ProductFormData]) {
       setErrors((prev) => ({
         ...prev,
@@ -122,105 +113,27 @@ export default function CreateProduct() {
     }
   };
 
-  const handleArrayChange = (
-    index: number,
-    value: string,
-    field: keyof Pick<ProductFormData, "specs" | "applications">
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: prev[field].map((item, i) => (i === index ? value : item)),
-    }));
-  };
-
-  const addArrayItem = (
-    field: keyof Pick<ProductFormData, "specs" | "applications">
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: [...prev[field], ""],
-    }));
-  };
-
-  const removeArrayItem = (
-    index: number,
-    field: keyof Pick<ProductFormData, "specs" | "applications">
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: prev[field].filter((_, i) => i !== index),
-    }));
-  };
-
-  const handleCertificationChange = (cert: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      certification: prev.certification.includes(cert)
-        ? prev.certification.filter((c) => c !== cert)
-        : [...prev.certification, cert],
-    }));
-  };
-
-  const addTag = () => {
-    if (currentTag.trim() && !formData.tags.includes(currentTag.trim())) {
-      setFormData((prev) => ({
-        ...prev,
-        tags: [...prev.tags, currentTag.trim()],
-      }));
-      setCurrentTag("");
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((tag) => tag !== tagToRemove),
-    }));
-  };
+  // Removed array and checkbox handlers for fields not in interface
 
   const validateForm = (): FormErrors => {
     const newErrors: FormErrors = {};
-
     if (!formData.name.trim()) newErrors.name = "กรุณากรอกชื่อสินค้า";
-    if (!formData.category) newErrors.category = "กรุณาเลือกหมวดหมู่";
-    if (!formData.price.trim()) newErrors.price = "กรุณากรอกราคา";
-    if (!formData.description.trim())
+    if (formData.price === undefined || isNaN(formData.price))
+      newErrors.price = "กรุณากรอกราคาเป็นตัวเลข";
+    if (!formData.description?.trim())
       newErrors.description = "กรุณากรอกคำอธิบาย";
-
-    // Validate price is number
-    const priceNumber = parseFloat(formData.price.replace(",", ""));
-    if (formData.price && isNaN(priceNumber)) {
-      newErrors.price = "ราคาต้องเป็นตัวเลข";
-    }
-
-    // Validate specs (at least one non-empty spec)
-    const validSpecs = formData.specs.filter((spec) => spec.trim());
-    if (validSpecs.length === 0) {
-      newErrors.specs = "กรุณากรอกคุณสมบัติอย่างน้อย 1 รายการ";
-    }
-
+    // Add more validations as needed for required fields in ProductFormData
     return newErrors;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors = validateForm();
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
-    // Filter out empty specs and applications
-    const cleanedData = {
-      ...formData,
-      specs: formData.specs.filter((spec) => spec.trim()),
-      applications: formData.applications.filter((app) => app.trim()),
-    };
-
-    console.log("Product Data:", cleanedData);
-
-    // Simulate successful save
+    console.log("Product Data:", formData);
     setShowSuccess(true);
     setTimeout(() => {
       setShowSuccess(false);
@@ -369,108 +282,82 @@ export default function CreateProduct() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  หมวดหมู่ *
+                  ราคา *
                 </label>
-                <select
-                  name="category"
-                  value={formData.category}
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price ?? ""}
                   onChange={handleInputChange}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${
-                    errors.category ? "border-red-500" : "border-gray-300"
+                    errors.price ? "border-red-500" : "border-gray-300"
                   }`}
-                >
-                  <option value="">เลือกหมวดหมู่</option>
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-                {errors.category && (
+                  placeholder="2500"
+                />
+                {errors.price && (
                   <p className="mt-1 text-sm text-red-600 flex items-center">
                     <AlertCircle className="w-4 h-4 mr-1" />
-                    {errors.category}
+                    {errors.price}
                   </p>
                 )}
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ราคา *
-                  </label>
-                  <input
-                    type="text"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${
-                      errors.price ? "border-red-500" : "border-gray-300"
-                    }`}
-                    placeholder="2,500"
-                  />
-                  {errors.price && (
-                    <p className="mt-1 text-sm text-red-600 flex items-center">
-                      <AlertCircle className="w-4 h-4 mr-1" />
-                      {errors.price}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    หน่วย
-                  </label>
-                  <select
-                    name="unit"
-                    value={formData.unit}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                  >
-                    {units.map((unit) => (
-                      <option key={unit} value={unit}>
-                        {unit}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
+                          {/* --- Unit --- */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                หน่วย
+              </label>
+              <select
+                name="unit"
+                value={formData.unit}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              >
+                <option value="">เลือกหน่วย</option>
+                {units.map((unit) => (
+                  <option key={unit} value={unit}>
+                    {unit}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* --- In Stock --- */}
+            <div className="flex items-center mt-2">
+              <input
+                type="checkbox"
+                name="inStock"
+                id="inStock"
+                checked={formData.inStock}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    inStock: e.target.checked,
+                  }))
+                }
+                className="mr-2"
+              />
+              <label htmlFor="inStock" className="text-sm font-medium text-gray-700">
+                มีในสต็อก
+              </label>
+            </div>
+            {/* --- Badge --- */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Badge
+              </label>
+              <select
+                name="badge"
+                value={formData.badge}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              >
+                {badges.map((badge) => (
+                  <option key={badge} value={badge}>
+                    {badge === "" ? "ไม่มี" : badge}
+                  </option>
+                ))}
+              </select>
+            </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  ป้าย
-                </label>
-                <select
-                  name="badge"
-                  value={formData.badge}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                >
-                  {badges.map((badge) => (
-                    <option key={badge} value={badge}>
-                      {badge || "ไม่มี"}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  name="inStock"
-                  id="inStock"
-                  checked={formData.inStock}
-                  onChange={handleInputChange}
-                  className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <label
-                  htmlFor="inStock"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  มีสินค้าในสต็อก
-                </label>
-              </div>
-
-              <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   คำอธิบายสั้น *
                 </label>
@@ -491,257 +378,103 @@ export default function CreateProduct() {
                   </p>
                 )}
               </div>
-            </div>
-          </div>
-
-          {/* Detailed Information */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              รายละเอียดเพิ่มเติม
-            </h2>
-            <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  รายละเอียดครบถ้วน
+                  สูตรเคมี
                 </label>
-                <textarea
-                  name="detailedDescription"
-                  value={formData.detailedDescription}
-                  onChange={handleInputChange}
-                  rows={5}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none"
-                  placeholder="รายละเอียดครบถ้วนเกี่ยวกับสินค้า การใช้งาน ประโยชน์ ฯลฯ"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ปริมาณสั่งซื้อขั้นต่ำ
-                  </label>
-                  <input
-                    type="text"
-                    name="minOrder"
-                    value={formData.minOrder}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    placeholder="1 กก."
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ปริมาณสั่งซื้อสูงสุด
-                  </label>
-                  <input
-                    type="text"
-                    name="maxOrder"
-                    value={formData.maxOrder}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    placeholder="1000 กก."
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    อายุการเก็บ
-                  </label>
-                  <input
-                    type="text"
-                    name="shelfLife"
-                    value={formData.shelfLife}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    placeholder="24 เดือน"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    แหล่งผลิต
-                  </label>
-                  <input
-                    type="text"
-                    name="origin"
-                    value={formData.origin}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    placeholder="ประเทศจีน"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  เงื่อนไขการเก็บรักษา
-                </label>
-                <textarea
-                  name="storageCondition"
-                  value={formData.storageCondition}
-                  onChange={handleInputChange}
-                  rows={2}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none"
-                  placeholder="เก็บในที่แห้ง อุณหภูมิห้อง หลีกเลี่ยงแสงแดด"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Specifications */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              คุณสมบัติทางเคมี *
-            </h2>
-            <div className="space-y-4">
-              {formData.specs.map((spec, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <input
-                    type="text"
-                    value={spec}
-                    onChange={(e) =>
-                      handleArrayChange(index, e.target.value, "specs")
-                    }
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    placeholder="เช่น ความหนืด: 4000-6000 cP"
-                  />
-                  {formData.specs.length > 1 && (
-                    <button
-                      onClick={() => removeArrayItem(index, "specs")}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                onClick={() => addArrayItem("specs")}
-                className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition"
-              >
-                <Plus className="w-5 h-5" />
-                <span>เพิ่มคุณสมบัติ</span>
-              </button>
-              {errors.specs && (
-                <p className="text-sm text-red-600 flex items-center">
-                  <AlertCircle className="w-4 h-4 mr-1" />
-                  {errors.specs}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Applications */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">การใช้งาน</h2>
-            <div className="space-y-4">
-              {formData.applications.map((app, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <input
-                    type="text"
-                    value={app}
-                    onChange={(e) =>
-                      handleArrayChange(index, e.target.value, "applications")
-                    }
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    placeholder="เช่น ใช้ในการผลิตไอศกรีม"
-                  />
-                  {formData.applications.length > 1 && (
-                    <button
-                      onClick={() => removeArrayItem(index, "applications")}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                onClick={() => addArrayItem("applications")}
-                className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition"
-              >
-                <Plus className="w-5 h-5" />
-                <span>เพิ่มการใช้งาน</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Certifications */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">การรับรอง</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {certificationOptions.map((cert) => (
-                <label
-                  key={cert}
-                  className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    checked={formData.certification.includes(cert)}
-                    onChange={() => handleCertificationChange(cert)}
-                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700">{cert}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Safety Information */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              ข้อมูลความปลอดภัย
-            </h2>
-            <textarea
-              name="safetyInfo"
-              value={formData.safetyInfo}
-              onChange={handleInputChange}
-              rows={4}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none"
-              placeholder="คำแนะนำด้านความปลอดภัย ข้อควรระวัง การปฐมพยาบาล ฯลฯ"
-            />
-          </div>
-
-          {/* Tags */}
-          <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">แท็ก</h2>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
                 <input
                   type="text"
-                  value={currentTag}
-                  onChange={(e) => setCurrentTag(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && addTag()}
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                  placeholder="พิมพ์แท็กแล้วกด Enter"
+                  name="chemical_formula"
+                  value={formData.chemical_formula ?? ""}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  placeholder="เช่น C6H8O7"
                 />
-                <button
-                  onClick={addTag}
-                  className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  เพิ่ม
-                </button>
               </div>
-              {formData.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {formData.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
-                    >
-                      <span>{tag}</span>
-                      <button
-                        onClick={() => removeTag(tag)}
-                        className="text-blue-600 hover:text-blue-800"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  บรรจุภัณฑ์
+                </label>
+                <input
+                  type="text"
+                  name="packaging"
+                  value={formData.packaging ?? ""}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  placeholder="เช่น 25 กก./ถุง"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Properties
+                </label>
+                <input
+                  type="text"
+                  name="properties"
+                  value={formData.properties ?? ""}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  placeholder=""
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  หมวดหมู่ (ID)
+                </label>
+                <input
+                  type="number"
+                  name="categoryId"
+                  value={formData.categoryId}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  placeholder="1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ลักษณะเฉพาะ (characteristicsId)
+                </label>
+                <input
+                  type="number"
+                  name="characteristicsId"
+                  value={formData.characteristicsId}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  placeholder="1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ประเทศต้นทาง (origin_countryId)
+                </label>
+                <input
+                  type="number"
+                  name="origin_countryId"
+                  value={formData.origin_countryId}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  placeholder="1"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  รูปภาพ (URL)
+                </label>
+                <input
+                  type="text"
+                  name="imageUrl"
+                  value={formData.imageUrl ?? ""}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  placeholder="https://..."
+                />
+              </div>
             </div>
           </div>
+
+          {/* Removed detailed info fields not in ProductFormData */}
+
+          {/* Removed specifications, applications, certifications, safetyInfo, tags sections */}
 
           {/* Submit Buttons */}
           <div className="flex justify-end space-x-4">
@@ -804,117 +537,69 @@ function ProductPreview({ data, onBack, onSave }: ProductPreviewProps) {
           </div>
         </div>
       </header>
-
       {/* Preview Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 space-y-6">
           {/* Title */}
           <h2 className="text-3xl font-bold text-gray-900">{data.name}</h2>
           <p className="text-gray-600">{data.description}</p>
-
           {/* Basic Info */}
           <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
             <p>
-              <span className="font-medium">หมวดหมู่:</span> {data.category}
+              <span className="font-medium">สูตรเคมี:</span>{" "}
+              {data.chemical_formula}
             </p>
             <p>
-              <span className="font-medium">ราคา:</span> {data.price} /{" "}
-              {data.unit}
+              <span className="font-medium">บรรจุภัณฑ์:</span> {data.packaging}
             </p>
-            {data.badge && (
-              <p>
-                <span className="font-medium">ป้าย:</span> {data.badge}
-              </p>
-            )}
             <p>
-              <span className="font-medium">สถานะ:</span>{" "}
-              {data.inStock ? "มีสินค้าในสต็อก" : "สินค้าหมด"}
+              <span className="font-medium">ราคา:</span> {data.price}
+            </p>
+            <p>
+              <span className="font-medium">หน่วย:</span> {data.unit}
+            </p>
+            <p>
+              <span className="font-medium">มีในสต็อก:</span>{" "}
+              {data.inStock ? "ใช่" : "ไม่"}
+            </p>
+            <p>
+              <span className="font-medium">Badge:</span> {data.badge}
+            </p>
+            <p>
+              <span className="font-medium">หมวดหมู่ (ID):</span>{" "}
+              {data.categoryId}
+            </p>
+            <p>
+              <span className="font-medium">
+                ลักษณะเฉพาะ (characteristicsId):
+              </span>{" "}
+              {data.characteristicsId}
+            </p>
+            <p>
+              <span className="font-medium">
+                ประเทศต้นทาง (origin_countryId):
+              </span>{" "}
+              {data.origin_countryId}
             </p>
           </div>
-
-          {/* Detailed Description */}
-          {data.detailedDescription && (
+          {data.properties && (
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                รายละเอียด
+                Properties
               </h3>
-              <p className="text-gray-700 leading-relaxed">
-                {data.detailedDescription}
-              </p>
+              <p className="text-gray-700 leading-relaxed">{data.properties}</p>
             </div>
           )}
-
-          {/* Specs */}
-          {data.specs.length > 0 && (
+          {data.imageUrl && (
             <div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                คุณสมบัติทางเคมี
+                รูปภาพ
               </h3>
-              <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                {data.specs.map((spec, i) => (
-                  <li key={i}>{spec}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Applications */}
-          {data.applications.length > 0 && (
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                การใช้งาน
-              </h3>
-              <ul className="list-disc pl-6 space-y-1 text-gray-700">
-                {data.applications.map((app, i) => (
-                  <li key={i}>{app}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Certifications */}
-          {data.certification.length > 0 && (
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                การรับรอง
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {data.certification.map((cert: string) => (
-                  <span
-                    key={cert}
-                    className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full"
-                  >
-                    {cert}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Safety Info */}
-          {data.safetyInfo && (
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                ข้อมูลความปลอดภัย
-              </h3>
-              <p className="text-gray-700 leading-relaxed">{data.safetyInfo}</p>
-            </div>
-          )}
-
-          {/* Tags */}
-          {data.tags.length > 0 && (
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">แท็ก</h3>
-              <div className="flex flex-wrap gap-2">
-                {data.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
+              <img
+                src={data.imageUrl}
+                alt={data.name}
+                className="max-w-xs max-h-64 rounded-lg shadow"
+              />
             </div>
           )}
         </div>
