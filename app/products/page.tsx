@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import axios from 'axios'
 import { Search, Filter, Star, ShoppingCart, Eye, ChevronDown, Package, Award, Truck, Phone } from "lucide-react";
 import { useSearchParams } from "next/navigation";
@@ -109,6 +109,7 @@ export default function Products() {
         </div>
       </section>
 
+      <Suspense fallback={<div>Loading...</div>}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
@@ -182,6 +183,7 @@ export default function Products() {
             </div>
 
             {/* Products Grid */}
+            
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {sortedProducts.map((product: any) => (
                 <div key={product.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
@@ -278,6 +280,7 @@ export default function Products() {
           </div>
         </div>
       </div>
+      </Suspense>
 
       {/* Features Section */}
       <section className="bg-white py-16 mt-16">
