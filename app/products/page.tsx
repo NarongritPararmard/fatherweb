@@ -21,136 +21,6 @@ export default function Products() {
     }
   }
 
-
-  // const products = [
-  //   {
-  //     id: 1,
-  //     name: "CMC Food Grade (High Viscosity)",
-  //     category: "CMC",
-  //     price: "2,500",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.8,
-  //     reviews: 24,
-  //     description: "Carboxymethyl Cellulose ความหนืดสูง เหมาะสำหรับผลิตไอศกรีมและเครื่องดื่ม",
-  //     inStock: true,
-  //     badge: "ขายดี",
-  //     specs: ["ความหนืด: 4000-6000 cP", "ความชื้น: ≤10%", "pH: 6.5-8.5"]
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Citric Acid Monohydrate",
-  //     category: "กรดซิตริก",
-  //     price: "450",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.9,
-  //     reviews: 42,
-  //     description: "กรดซิตริกคุณภาพสูง สำหรับปรับรสชาติและยืดอายุอาหาร",
-  //     inStock: true,
-  //     badge: "แนะนำ",
-  //     specs: ["ความบริสุทธิ์: ≥99.5%", "ตาหนัก: ≤10 ppm", "ตะกั่ว: ≤0.5 ppm"]
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Sodium Benzoate",
-  //     category: "สารกันเสีย",
-  //     price: "680",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.7,
-  //     reviews: 18,
-  //     description: "สารกันเสียธรรมชาติ ปลอดภัยสำหรับอาหารและเครื่องดื่ม",
-  //     inStock: true,
-  //     badge: "ใหม่",
-  //     specs: ["ความบริสุทธิ์: ≥99%", "ความชื้น: ≤1.5%", "pH: 7-9"]
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Xanthan Gum",
-  //     category: "สารเพิ่มความข้น",
-  //     price: "3,200",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.6,
-  //     reviews: 15,
-  //     description: "สารเพิ่มความข้นธรรมชาติ ให้เนื้อสัมผัสที่นุ่มลื่น",
-  //     inStock: true,
-  //     badge: "",
-  //     specs: ["Viscosity: 1200-1600 cP", "Mesh: 80-120", "Loss on Drying: ≤15%"]
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Potassium Sorbate",
-  //     category: "สารกันเสีย",
-  //     price: "890",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.8,
-  //     reviews: 31,
-  //     description: "สารกันเสียที่มีประสิทธิภาพสูง เหมาะสำหรับผลิตภัณฑ์อาหาร",
-  //     inStock: false,
-  //     badge: "",
-  //     specs: ["ความบริสุทธิ์: ≥98%", "ความชื้น: ≤1%", "Heavy Metals: ≤10 ppm"]
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Aspartame",
-  //     category: "น้ำตาลและสารให้ความหวาน",
-  //     price: "1,250",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.5,
-  //     reviews: 12,
-  //     description: "สารให้ความหวานเทียม ความหวานสูงกว่าน้ำตาลทราย 200 เท่า",
-  //     inStock: true,
-  //     badge: "",
-  //     specs: ["ความบริสุทธิ์: ≥98%", "ตาหนัก: ≤10 ppm", "Residue on ignition: ≤0.2%"]
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Tartrazine (Yellow 5)",
-  //     category: "สีผสมอาหาร",
-  //     price: "720",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.4,
-  //     reviews: 8,
-  //     description: "สีเหลืองสำหรับอาหาร ให้สีสวยงามและคงทน",
-  //     inStock: true,
-  //     badge: "",
-  //     specs: ["Total Dyes: ≥85%", "Volatile Matter: ≤15%", "Water Insoluble: ≤0.2%"]
-  //   },
-  //   {
-  //     id: 8,
-  //     name: "Monosodium Glutamate (MSG)",
-  //     category: "สารปรุงแต่งรส",
-  //     price: "125",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.9,
-  //     reviews: 67,
-  //     description: "ผงชูรสคุณภาพสูง เพิ่มรสอูมามิให้อาหาร",
-  //     inStock: true,
-  //     badge: "ขายดี",
-  //     specs: ["ความบริสุทธิ์: ≥99%", "ความชื้น: ≤0.5%", "pH: 6.7-7.2"]
-  //   },
-  //   {
-  //     id: 9,
-  //     name: "Alpha Amylase",
-  //     category: "เอนไซม์",
-  //     price: "1,800",
-  //     unit: "กก.",
-  //     image: "/api/placeholder/300/200",
-  //     rating: 4.7,
-  //     reviews: 14,
-  //     description: "เอนไซม์สำหรับอุตสาหกรรมขนมปังและเบเกอรี่",
-  //     inStock: true,
-  //     badge: "",
-  //     specs: ["Activity: ≥100,000 U/g", "Moisture: ≤8%", "Temperature: 60-70°C"]
-  //   }
-  // ];
-
   const [products, setProducts] = useState([])
 
   const fetchProducts = async () => {
@@ -203,7 +73,7 @@ export default function Products() {
                 </div>
               </div>
               <nav className="hidden md:flex space-x-8">
-                <a href="/home" className="text-gray-700 hover:text-blue-600 transition">หน้าแรก</a>
+                <a href="/" className="text-gray-700 hover:text-blue-600 transition">หน้าแรก</a>
                 <a href="/products" className="text-blue-600 font-semibold border-b-2 border-blue-600">สินค้า</a>
                 <a href="/about-us" className="text-gray-700 hover:text-blue-600 transition">เกี่ยวกับเรา</a>
                 <a href="/contect" className="text-gray-700 hover:text-blue-600 transition">ติดต่อ</a>
