@@ -11,22 +11,26 @@ const Edit = ({ params }: { params: Params }) => {
   const [content, setContent] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [categories, setCategories] = useState([])
+  const [imageUrl, setImageUrl] = useState('')
+  const [file, setFile] = useState<File | null>(null)
+
   const router = useRouter()
   const { id } = use(params)
 
   const fetchPost = async (id: string) => {
     try {
-        const response = await axios.get(`/api/posts/${id}`)
-        setTitle(response.data.title)
-        setContent(response.data.content)
-        setCategoryId(response.data.categoryId)
+      const response = await axios.get(`/api/posts/${id}`)
+      setTitle(response.data.title)
+      setContent(response.data.content)
+      setCategoryId(response.data.categoryId)
+      setImageUrl(response.data.imageUrl)
     } catch (error) {
       console.error('error', error)
       alert('Failed to fetch post')
     }
   }
 
-    const fetchCategories = async () => {
+  const fetchCategories = async () => {
     try {
       const response = await axios.get(`/api/categories`)
       setCategories(response.data)
@@ -40,24 +44,31 @@ const Edit = ({ params }: { params: Params }) => {
       fetchPost(id)
     }
     fetchCategories()
-    
+
   }, [])
 
   const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault()
-        try {
-            await axios.put(`/api/posts/${id}`, { 
-                title, 
-                content,
-                categoryId
-            })
-            router.push('/')
-        } catch (error) {
-            console.error('error', error)
-            alert('Failed to create post')
-        }
-        console.log({ title, content })
+    event.preventDefault()
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("categoryId", categoryId.toString());
+    if (file) {
+      formData.append('file', file)
     }
+    try {
+      await axios.put(`/api/posts/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      router.push('/')
+    } catch (error) {
+      console.error('error', error)
+      alert('Failed to create post')
+    }
+    console.log({ title, content })
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -105,10 +116,27 @@ const Edit = ({ params }: { params: Params }) => {
           >
             <option value="">Select a category</option>
             {/* Example static categories, replace or populate dynamically */}
-            {categories.map((cat:any) => (
+            {categories.map((cat: any) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
+        </div>
+        <div>
+          <div>Current Image:</div>
+          {imageUrl && <img src={imageUrl} alt="Current" className="w-32 h-32 object-cover mb-2" />}
+          <label
+            htmlFor="file"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Upload New Image
+          </label>
+          <input
+            type="file"
+            name="file"
+            accept="image/*"
+            required
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
         </div>
         <div>
           <button
