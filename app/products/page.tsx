@@ -3,9 +3,12 @@
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import { Search, Filter, Star, ShoppingCart, Eye, ChevronDown, Package, Award, Truck, Phone } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
-export default function Products({ searchParams }: { searchParams: { category?: string } }) {
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.category || "ทั้งหมด");
+export default function Products() {
+  const searchParams = useSearchParams()
+  const category = searchParams.get("category") || "ทั้งหมด"
+  const [selectedCategory, setSelectedCategory] = useState(category);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [showFilters, setShowFilters] = useState(false);
