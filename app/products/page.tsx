@@ -185,69 +185,104 @@ function ProductsContent() {
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
               {sortedProducts.map((product: any) => (
-                <div key={product.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+                <div key={product.id} className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 hover:border-blue-200">
                   {/* Product Image */}
-                  <div className="relative">
-                    <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200"></div>
+                  <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50">
+                    <div className="h-56 flex items-center justify-center relative">
+                      <img
+                        src={product.imageUrl || '/placeholder.png'}
+                        alt={product.name}
+                        className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-500"
+                      />
+                      
+                      {/* Subtle overlay for better image presentation */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent pointer-events-none"></div>
+                    </div>
 
+                    {/* Badge */}
                     {product.badge && (
-                      <span className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${product.badge === 'ขายไม่ดี' ? 'bg-red-100 text-red-600' :
-                        product.badge === 'แนะนำ' ? 'bg-blue-100 text-blue-600' :
-                          'bg-green-100 text-green-600'
-                        }`}>
+                      <span className={`absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm ${
+                        product.badge === 'ขายไม่ดี' ? 'bg-red-500/90 text-white' :
+                        product.badge === 'แนะนำ' ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' :
+                        'bg-gradient-to-r from-emerald-500 to-green-600 text-white'
+                      }`}>
                         {product.badge}
                       </span>
                     )}
 
+                    {/* Out of Stock Overlay */}
                     {!product.inStock && (
-                      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                        <span className="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                        <div className="bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl border-2 border-white/20">
                           สินค้าหมด
-                        </span>
+                        </div>
                       </div>
                     )}
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-blue-600 font-medium">{product.category.name}</span>
+                  <div className="p-6 space-y-4">
+                    {/* Category and Rating */}
+                    <div className="flex items-center justify-between">
+                      <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-100">
+                        {product.category.name}
+                      </span>
                       <div className="flex items-center space-x-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        {/* <span className="text-sm text-gray-600">{product.rating}</span>
-                        <span className="text-sm text-gray-400">({product.reviews})</span> */}
+                        <div className="flex space-x-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                          ))}
+                        </div>
+                        <span className="text-xs text-gray-500 ml-1">(4.8)</span>
                       </div>
                     </div>
 
-                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-2">{product.description}</p>
+                    {/* Product Name */}
+                    <h3 className="font-bold text-gray-900 text-lg leading-tight line-clamp-2 group-hover:text-blue-700 transition-colors">
+                      {product.name}
+                    </h3>
 
-                    {/* Price & Actions */}
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-2xl font-bold text-blue-600">฿{product.price}</span>
-                        <span className="text-gray-500 text-sm">/{product.unit}</span>
+                    {/* Description */}
+                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
+                      {product.description}
+                    </p>
+
+                    {/* Price Section */}
+                    <div className="pt-2 border-t border-gray-100">
+                      <div className="flex items-end justify-between mb-4">
+                        <div className="flex items-baseline space-x-1">
+                          <span className="text-3xl font-bold text-blue-600">
+                            ฿{product.price?.toLocaleString()}
+                          </span>
+                          <span className="text-gray-500 text-sm font-medium">
+                            /{product.unit}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex space-x-2">
-                        <button className="p-2 text-gray-400 hover:text-blue-600 transition">
+
+                      {/* Action Buttons */}
+                      <div className="flex items-center space-x-3">
+                        <button className="flex-shrink-0 p-3 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-xl transition-all duration-300 hover:scale-110 border border-gray-200 hover:border-blue-200">
                           <Eye className="w-5 h-5" />
                         </button>
+                        
                         <button
-                          className={`px-4 py-2 rounded-lg font-medium transition ${product.inStock
-                            ? 'bg-blue-600 text-white hover:bg-blue-700'
-                            : 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                            }`}
+                          className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${
+                            product.inStock
+                              ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
+                              : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                          }`}
                           disabled={!product.inStock}
                         >
                           {product.inStock ? (
                             <>
-                              <ShoppingCart className="w-4 h-4 inline mr-1" />
-                              สอบถาม
+                              <ShoppingCart className="w-5 h-5" />
+                              <span>สอบถามราคา</span>
                             </>
                           ) : (
-                            'สินค้าหมด'
+                            <span>สินค้าหมด</span>
                           )}
                         </button>
                       </div>
