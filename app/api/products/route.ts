@@ -5,45 +5,28 @@ import { supabase } from "@/lib/supabase";
 const prisma = new PrismaClient()
 
 export async function GET(request: NextRequest) {
-    const searchParams = request.nextUrl.searchParams;
-    const search = searchParams.get('search') || '';
-    const category = searchParams.get('category');
-    const sort = searchParams.get('sort') || 'desc';
-
-    console.log({ search, category, sort });
-
-    let whereCondition = category ? {
-        title: {
-            contains: search,
-            mode: 'insensitive',
-        },
-        category: {
-            name: category,
-        },
-    } : {
-        title: {
-            contains: search,
-            mode: 'insensitive',
-        },
-    };
-
-    const posts = await prisma.post.findMany({
-        where: whereCondition as any,
-        orderBy: {
-            createdAt: sort,
-        } as any,
+    
+    const products = await prisma.product.findMany({
         include: {
             category: true,
+            characteristics: true,
+            origin_country: true,
         }
-    }
-    );
-    return Response.json(posts);
+});
+    return Response.json(products);
 }
 
 export async function POST(request: NextRequest) {
+
     const formData = await request.formData();
-    const title = formData.get('title')?.toString() || '';
-    const content = formData.get('content')?.toString() || '';
+    const name = formData.get('name')?.toString() || '';
+    const chemical_formula = formData.get('chemical_formula')?.toString() || '';
+    const packaging = formData.get('packaging')?.toString() || '';
+    const price = parseFloat(formData.get('price')?.toString() || '0');
+    const description = formData.get('description')?.toString() || '';
+    const properties = formData.get('properties')?.toString() || '';
+    const characteristicsId = formData.get('characteristicsId')?.toString() || '';
+    const origin_countryId = formData.get('origin_countryId')?.toString() || '';
     const categoryId = formData.get('categoryId')?.toString() || '';
     const file = formData.get('file') as File | null;
 
@@ -51,9 +34,6 @@ export async function POST(request: NextRequest) {
 
     if (!file) {
         return NextResponse.json({ error: "No file provided" }, { status: 400 });
-    }
-    if (!title || !content || !categoryId) {
-        return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     // console.log({ title, content, categoryId, file });
@@ -83,16 +63,20 @@ export async function POST(request: NextRequest) {
     const imageUrl = data.publicUrl;
 
     // const { title, content, categoryId, imageUrl } = await request.json()
-    const newPost = await prisma.post.create({
+    const newProduct = await prisma.product.create({
         data: {
-            title,
-            content,
+            name,
+            chemical_formula,
+            packaging,
+            price,
+            description,
+            properties,
+            characteristicsId: Number(characteristicsId),
+            origin_countryId: Number(origin_countryId),
             categoryId: Number(categoryId),
             imageUrl
         }
     })
-    return Response.json(newPost);
+    return Response.json(newProduct);
 }
-
-
 

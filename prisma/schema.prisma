@@ -9,8 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Post {
@@ -23,9 +24,44 @@ model Post {
   createdAt  DateTime @default(now())
 }
 
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  chemical_formula String?
+  packaging   String?
+  price       Float?
+  unit        String?
+  inStock     Boolean  @default(true)
+  badge       String?  // e.g., "ขายดี", "แนะนำ", "สินค้าใหม่"
+  description String?
+  properties  String?
+  characteristicsId Int
+  characteristics   Characteristic @relation(fields: [characteristicsId], references: [id])
+  origin_countryId Int
+  origin_country   Country @relation(fields: [origin_countryId], references: [id])
+  categoryId  Int
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now())
+  imageUrl    String?
+}
+
+model Characteristic {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  products    Product[]
+}
+
+model Country {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  products Product[]
+}
+
 model Category {
   id    Int    @id @default(autoincrement())
   name  String @unique
   posts Post[]
+  products Product[]
 }
-
