@@ -30,6 +30,9 @@ model Product {
   chemical_formula String?
   packaging   String?
   price       Float?
+  unit        String?
+  inStock     Boolean  @default(true)
+  badge       String?  // e.g., "ขายดี", "แนะนำ", "สินค้าใหม่"
   description String?
   properties  String?
   characteristicsId Int
