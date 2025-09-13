@@ -15,7 +15,7 @@ const Create = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    if (!file) return alert("Please select a file");
+    // if (!file) return alert("Please select a file");
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
@@ -104,7 +104,6 @@ const Create = () => {
             type="file"
             name="file"
             accept="image/*"
-            required
             onChange={(e) => setFile(e.target.files?.[0] || null)}
           />
         </div>

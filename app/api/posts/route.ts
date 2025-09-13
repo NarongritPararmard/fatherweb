@@ -48,9 +48,21 @@ export async function POST(request: NextRequest) {
     const file = formData.get('file') as File | null;
 
     // const { title, content, categoryId, file } = await request.json()
-
-    if (!file) {
-        return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    console.log("Received file:", file);
+    console.log("File type:", file?.type);
+    console.log("File name:", file?.name);
+    console.log(file?.size > 0 ? "File is present" : "No file uploaded");
+    
+    if (file?.size > 0 === false) {
+        const newPost = await prisma.post.create({
+        data: {
+            title,
+            content,
+            categoryId: Number(categoryId),
+            imageUrl: "", // กรณีไม่มีการอัพโหลดไฟล์ ให้เก็บเป็นค่าว่าง
+        }
+        })
+        return Response.json(newPost);
     }
     if (!title || !content || !categoryId) {
         return NextResponse.json({ error: "Missing required fields" }, { status: 400 });

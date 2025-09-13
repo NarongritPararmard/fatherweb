@@ -11,6 +11,8 @@ const Edit = ({ params }: { params: Params }) => {
   const [content, setContent] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [categories, setCategories] = useState([])
+  const [imageUrl, setImageUrl] = useState('')
+  const [file, setFile] = useState<File | null>(null)
   const router = useRouter()
   const { id } = use(params)
 
@@ -20,6 +22,7 @@ const Edit = ({ params }: { params: Params }) => {
         setTitle(response.data.title)
         setContent(response.data.content)
         setCategoryId(response.data.categoryId)
+        setImageUrl(response.data.imageUrl)
     } catch (error) {
       console.error('error', error)
       alert('Failed to fetch post')
@@ -45,11 +48,18 @@ const Edit = ({ params }: { params: Params }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
+
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        formData.append("categoryId", categoryId.toString());
+        formData.append("file", file); // ส่งเป็น File object จริง
+
         try {
-            await axios.put(`/api/posts/${id}`, { 
-                title, 
-                content,
-                categoryId
+            await axios.put(`/api/posts/${id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             })
             router.push('/')
         } catch (error) {
@@ -109,6 +119,22 @@ const Edit = ({ params }: { params: Params }) => {
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
+        </div>
+                <div>
+          <div>Current Image:</div>
+          {imageUrl && <img src={imageUrl} alt="Current" className="w-32 h-32 object-cover mb-2" />}
+          <label
+            htmlFor="file"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Upload New Image
+          </label>
+          <input
+            type="file"
+            name="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
         </div>
         <div>
           <button
