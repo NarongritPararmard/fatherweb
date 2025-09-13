@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import { Search, Filter, Star, ShoppingCart, Eye, ChevronDown, Package, Award, Truck, Phone } from "lucide-react";
 
-export default function Products() {
-  const [selectedCategory, setSelectedCategory] = useState("ทั้งหมด");
+export default function Products({ searchParams }: { searchParams: { category?: string } }) {
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.category || "ทั้งหมด");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [showFilters, setShowFilters] = useState(false);
@@ -137,7 +137,7 @@ export default function Products() {
                       <button
                         key={category.id}
                         onClick={() => setSelectedCategory(category.name)}
-                        className={`block w-full text-left px-3 py-2 rounded-lg transition ${selectedCategory === category
+                        className={`block w-full text-left px-3 py-2 rounded-lg transition ${selectedCategory === category.name
                           ? 'bg-blue-50 text-blue-600 font-medium'
                           : 'text-gray-600 hover:bg-gray-50'
                           }`}
@@ -185,7 +185,7 @@ export default function Products() {
                     <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200"></div>
 
                     {product.badge && (
-                      <span className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${product.badge === 'ขายดี' ? 'bg-red-100 text-red-600' :
+                      <span className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${product.badge === 'ขายไม่ดี' ? 'bg-red-100 text-red-600' :
                         product.badge === 'แนะนำ' ? 'bg-blue-100 text-blue-600' :
                           'bg-green-100 text-green-600'
                         }`}>
