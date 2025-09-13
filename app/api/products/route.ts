@@ -6,7 +6,6 @@ const prisma = new PrismaClient()
 
 export async function GET(request: NextRequest) {
     
-
     const products = await prisma.product.findMany({
         include: {
             category: true,
