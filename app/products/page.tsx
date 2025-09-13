@@ -1,19 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import axios from 'axios'
 import { Search, Filter, Star, ShoppingCart, Eye, ChevronDown, Package, Award, Truck, Phone } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 export default function Products() {
   const searchParams = useSearchParams()
-  const category = searchParams.get("category") || "ทั้งหมด"
-  const [selectedCategory, setSelectedCategory] = useState(category);
+  const search = searchParams.get('category') || 'ทั้งหมด'
+  const [selectedCategory, setSelectedCategory] = useState(search);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [showFilters, setShowFilters] = useState(false);
 
   const [categories, setCategories] = useState([])
+
+  console.log("Selected Category:", selectedCategory);
 
   const fetchCategories = async () => {
     try {
