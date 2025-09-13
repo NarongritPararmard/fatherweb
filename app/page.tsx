@@ -1,5 +1,6 @@
 'use client'
 
+import axios from "axios";
 import {
   ChevronRight,
   Award,
@@ -10,7 +11,26 @@ import {
   MapPin,
 } from "lucide-react";
 
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react";
+
 export default function Home() {
+  const router = useRouter()
+  const [categories, setCategories] = useState([])
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`/api/categories`)
+      setCategories(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -75,7 +95,7 @@ export default function Home() {
               พร้อมบริการครบครัน
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-lg">
+              <button onClick={() => router.push('/products')} className="px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-lg">
                 ดูสินค้าทั้งหมด
                 <ChevronRight className="inline ml-2 w-5 h-5" />
               </button>
@@ -148,62 +168,22 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              {
-                name: "CMC",
-                desc: "Carboxymethyl Cellulose",
-                color: "from-blue-500 to-blue-600",
-              },
-              {
-                name: "Citric Acid",
-                desc: "กรดซิตริก",
-                color: "from-yellow-500 to-orange-500",
-              },
-              {
-                name: "น้ำตาลทราย",
-                desc: "Sugar & Sweeteners",
-                color: "from-pink-500 to-red-500",
-              },
-              {
-                name: "สารกันเสีย",
-                desc: "Preservatives",
-                color: "from-green-500 to-teal-500",
-              },
-              {
-                name: "สีผสมอาหาร",
-                desc: "Food Coloring",
-                color: "from-purple-500 to-indigo-500",
-              },
-              {
-                name: "สารปรุงแต่งรส",
-                desc: "Flavor Enhancers",
-                color: "from-indigo-500 to-blue-500",
-              },
-              {
-                name: "เอนไซม์",
-                desc: "Food Enzymes",
-                color: "from-teal-500 to-green-500",
-              },
-              {
-                name: "อื่นๆ",
-                desc: "Others",
-                color: "from-gray-500 to-gray-600",
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="group relative p-8 bg-white border-2 border-gray-100 rounded-2xl text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden"
-              >
+            {categories.map((item, i) => (
+              <a key={i} href={`/products?category=${item.name}`}>
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                  className="group relative p-8 bg-white border-2 border-gray-100 rounded-2xl text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden"
+                >
+                  <div
+                  className={`absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
                 ></div>
                 <div className="relative">
                   <h3 className="text-lg font-bold text-gray-900 mb-2">
                     {item.name}
                   </h3>
-                  <p className="text-sm text-gray-600">{item.desc}</p>
+                  {/* <p className="text-sm text-gray-600">{item.desc}</p> */}
                 </div>
               </div>
+              </a>
             ))}
           </div>
         </div>
