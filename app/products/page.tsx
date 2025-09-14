@@ -2,10 +2,242 @@
 
 import { useEffect, useState } from "react";
 import axios from 'axios'
-import { Search, Filter, Star, ShoppingCart, Eye, ChevronDown, Package, Award, Truck, Phone } from "lucide-react";
+import { Search, Filter, Star, ShoppingCart, Eye, ChevronDown, Package, Award, Truck, Phone, X, FlaskConical, MapPin, Package2, Info } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import React, { Suspense } from "react"
+
+// Product interface
+export interface Product {
+  id: number;
+  name: string;
+  chemical_formula?: string;
+  packaging?: string;
+  price?: number;
+  description?: string;
+  properties?: string;
+  characteristicsId: number;
+  origin_countryId: number;
+  category: any;
+  createdAt?: Date;
+  imageUrl?: string;
+  unit?: string;
+  inStock?: boolean;
+  badge?: string;
+}
+
+// Product Detail Modal Component
+function ProductDetailModal({ product, isOpen, onClose }: { product: Product | null, isOpen: boolean, onClose: () => void }) {
+  if (!isOpen || !product) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto">
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      ></div>
+
+      {/* Modal */}
+      <div className="flex min-h-full items-center justify-center p-4">
+        <div className="relative bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          
+          {/* Header */}
+          <div className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6">
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            {product.badge && (
+              <span className={`inline-block px-4 py-2 rounded-full text-sm font-bold mb-4 ${
+                product.badge === 'ขายไม่ดี' ? 'bg-red-500/90' :
+                product.badge === 'แนะนำ' ? 'bg-blue-500/90' :
+                'bg-green-500/90'
+              }`}>
+                {product.badge}
+              </span>
+            )}
+            
+            <h2 className="text-3xl font-bold mb-2 pr-12">{product.name}</h2>
+            <div className="flex items-center space-x-4 text-blue-100">
+              <span className="px-3 py-1 bg-white/20 rounded-full text-sm font-medium">
+                {product.category?.name || 'ไม่ระบุหมวดหมู่'}
+              </span>
+              <div className="flex items-center space-x-1">
+                <div className="flex space-x-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <span className="text-sm ml-1">(4.8)</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="overflow-y-auto max-h-[calc(90vh-200px)]">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
+              
+              {/* Product Image */}
+              <div className="space-y-6">
+                <div className="relative bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl overflow-hidden">
+                  <div className="aspect-square flex items-center justify-center p-8">
+                    <img
+                      src={product.imageUrl || '/placeholder.png'}
+                      alt={product.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  
+                  {!product.inStock && (
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                      <div className="bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold">
+                        สินค้าหมด
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Price Section */}
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <div className="flex items-end justify-between mb-4">
+                    <div className="flex items-baseline space-x-1">
+                      <span className="text-4xl font-bold text-blue-600">
+                        ฿{product.price?.toLocaleString() || 'ติดต่อสอบถาม'}
+                      </span>
+                      {product.unit && (
+                        <span className="text-gray-500 text-lg font-medium">
+                          /{product.unit}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <button
+                    className={`w-full flex items-center justify-center space-x-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                      product.inStock
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl'
+                        : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                    }`}
+                    disabled={!product.inStock}
+                    onClick={() => { window.location.href = '/contact' }}
+                  >
+                    {product.inStock ? (
+                      <>
+                        <ShoppingCart className="w-6 h-6" />
+                        <span className="text-lg">สอบถามราคา</span>
+                      </>
+                    ) : (
+                      <span className="text-lg">สินค้าหมด</span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Product Details */}
+              <div className="space-y-6">
+                
+                {/* Description */}
+                {product.description && (
+                  <div>
+                    <h3 className="flex items-center text-xl font-bold text-gray-900 mb-3">
+                      <Info className="w-6 h-6 mr-2 text-blue-600" />
+                      รายละเอียดสินค้า
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed bg-gray-50 rounded-xl p-4">
+                      {product.description}
+                    </p>
+                  </div>
+                )}
+
+                {/* Chemical Formula */}
+                {product.chemical_formula && (
+                  <div>
+                    <h3 className="flex items-center text-xl font-bold text-gray-900 mb-3">
+                      <FlaskConical className="w-6 h-6 mr-2 text-green-600" />
+                      สูตรเคมี
+                    </h3>
+                    <div className="bg-green-50 border-l-4 border-green-400 rounded-r-xl p-4">
+                      <code className="text-lg font-mono text-green-800 font-semibold">
+                        {product.chemical_formula}
+                      </code>
+                    </div>
+                  </div>
+                )}
+
+                {/* Properties */}
+                {product.properties && (
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">คุณสมบัติ</h3>
+                    <div className="bg-blue-50 rounded-xl p-4">
+                      <p className="text-gray-700 leading-relaxed">{product.properties}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Packaging */}
+                {product.packaging && (
+                  <div>
+                    <h3 className="flex items-center text-xl font-bold text-gray-900 mb-3">
+                      <Package2 className="w-6 h-6 mr-2 text-orange-600" />
+                      บรรจุภัณฑ์
+                    </h3>
+                    <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
+                      <p className="text-gray-700 font-medium">{product.packaging}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Additional Info Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">รหัสสินค้า</h4>
+                    <p className="text-gray-600">#{product.id.toString().padStart(6, '0')}</p>
+                  </div>
+                  
+                  {product.unit && (
+                    <div className="bg-gray-50 rounded-xl p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">หน่วยขาย</h4>
+                      <p className="text-gray-600">{product.unit}</p>
+                    </div>
+                  )}
+                  
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">สถานะสินค้า</h4>
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                      product.inStock 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {product.inStock ? '✅ มีสินค้า' : '❌ สินค้าหมด'}
+                    </span>
+                  </div>
+                  
+                  {product.createdAt && (
+                    <div className="bg-gray-50 rounded-xl p-4">
+                      <h4 className="font-semibold text-gray-900 mb-2">วันที่เพิ่มสินค้า</h4>
+                      <p className="text-gray-600">
+                        {new Date(product.createdAt).toLocaleDateString('th-TH', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // แยก component ที่ใช้ useSearchParams ออกมา
 function ProductsContent() {
@@ -16,6 +248,10 @@ function ProductsContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [showFilters, setShowFilters] = useState(false);
+  
+  // Modal states
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [categories, setCategories] = useState([])
 
@@ -30,7 +266,7 @@ function ProductsContent() {
     }
   }
 
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<Product[]>([])
 
   const fetchProducts = async () => {
     try {
@@ -51,15 +287,26 @@ function ProductsContent() {
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
-        return a.price - b.price
+        return (a.price || 0) - (b.price || 0)
       case "price-high":
-        return b.price - a.price
+        return (b.price || 0) - (a.price || 0)
       case "rating":
-        return b.rating - a.rating;
+        return 0; // Since rating is not in the interface, return 0
       default:
         return a.name.localeCompare(b.name, 'th');
     }
   });
+
+  // Modal functions
+  const openProductModal = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeProductModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
 
   useEffect(() => {
     fetchProducts()
@@ -68,29 +315,6 @@ function ProductsContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-
-      {/* Header */}
-      {/* <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">TW</span>
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Triple World</h1>
-                <p className="text-sm text-gray-600">Food Chemical Supplier</p>
-              </div>
-            </div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="/" className="text-gray-700 hover:text-blue-600 transition">หน้าแรก</a>
-              <a href="/products" className="text-blue-600 font-semibold border-b-2 border-blue-600">สินค้า</a>
-              <a href="/about-us" className="text-gray-700 hover:text-blue-600 transition">เกี่ยวกับเรา</a>
-              <a href="/contect" className="text-gray-700 hover:text-blue-600 transition">ติดต่อ</a>
-            </nav>
-          </div>
-        </div>
-      </header> */}
       
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
@@ -169,7 +393,6 @@ function ProductsContent() {
                     <option value="name">ชื่อ A-Z</option>
                     <option value="price-low">ราคาต่ำสุด</option>
                     <option value="price-high">ราคาสูงสุด</option>
-                    {/* <option value="rating">คะแนนสูงสุด</option> */}
                   </select>
                 </div>
               </div>
@@ -188,7 +411,7 @@ function ProductsContent() {
 
             {/* Products Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-              {sortedProducts.map((product: any) => (
+              {sortedProducts.map((product: Product) => (
                 <div key={product.id} className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 hover:border-blue-200">
                   {/* Product Image */}
                   <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50">
@@ -229,7 +452,7 @@ function ProductsContent() {
                     {/* Category and Rating */}
                     <div className="flex items-center justify-between">
                       <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-100">
-                        {product.category.name}
+                        {product.category?.name || 'ไม่ระบุหมวดหมู่'}
                       </span>
                       <div className="flex items-center space-x-1">
                         <div className="flex space-x-0.5">
@@ -256,18 +479,21 @@ function ProductsContent() {
                       <div className="flex items-end justify-between mb-4">
                         <div className="flex items-baseline space-x-1">
                           <span className="text-3xl font-bold text-blue-600">
-                            ฿{product.price?.toLocaleString()}
+                            ฿{product.price?.toLocaleString() || 'ติดต่อ'}
                           </span>
-                          <span className="text-gray-500 text-sm font-medium">
-                            /{product.unit}
-                          </span>
+                          {product.unit && (
+                            <span className="text-gray-500 text-sm font-medium">
+                              /{product.unit}
+                            </span>
+                          )}
                         </div>
                       </div>
 
                       {/* Action Buttons */}
                       <div className="flex items-center space-x-3">
-                        <button className="flex-shrink-0 p-3 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-xl transition-all duration-300 hover:scale-110 border border-gray-200 hover:border-blue-200"
-                          onClick={() => { alert('Feature coming soon!') }}
+                        <button 
+                          className="flex-shrink-0 p-3 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-xl transition-all duration-300 hover:scale-110 border border-gray-200 hover:border-blue-200"
+                          onClick={() => openProductModal(product)}
                         >
                           <Eye className="w-5 h-5" />
                         </button>
@@ -278,7 +504,7 @@ function ProductsContent() {
                               ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
                               : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                           }`}
-                          onClick={() => { router.push(`/contact`) }} // เปลี่ยนเป็นฟังก์ชันที่ต้องการเมื่อคลิก
+                          onClick={() => { router.push(`/contact`) }}
                         >
                           {product.inStock ? (
                             <>
@@ -307,6 +533,13 @@ function ProductsContent() {
           </div>
         </div>
       </div>
+
+      {/* Product Detail Modal */}
+      <ProductDetailModal
+        product={selectedProduct}
+        isOpen={isModalOpen}
+        onClose={closeProductModal}
+      />
 
       {/* Features Section */}
       <section className="bg-white py-16 mt-16">
