@@ -3,13 +3,14 @@
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import { Search, Filter, Star, ShoppingCart, Eye, ChevronDown, Package, Award, Truck, Phone } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import React, { Suspense } from "react"
 
 // แยก component ที่ใช้ useSearchParams ออกมา
 function ProductsContent() {
   const searchParams = useSearchParams()
+  const router = useRouter();
   const search = searchParams.get('category') || 'ทั้งหมด'
   const [selectedCategory, setSelectedCategory] = useState(search);
   const [searchTerm, setSearchTerm] = useState("");
@@ -163,7 +164,7 @@ function ProductsContent() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full p-2 text-gray-500 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="name">ชื่อ A-Z</option>
                     <option value="price-low">ราคาต่ำสุด</option>
@@ -265,7 +266,9 @@ function ProductsContent() {
 
                       {/* Action Buttons */}
                       <div className="flex items-center space-x-3">
-                        <button className="flex-shrink-0 p-3 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-xl transition-all duration-300 hover:scale-110 border border-gray-200 hover:border-blue-200">
+                        <button className="flex-shrink-0 p-3 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-xl transition-all duration-300 hover:scale-110 border border-gray-200 hover:border-blue-200"
+                          onClick={() => { alert('Feature coming soon!') }}
+                        >
                           <Eye className="w-5 h-5" />
                         </button>
                         
@@ -275,7 +278,7 @@ function ProductsContent() {
                               ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
                               : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                           }`}
-                          disabled={!product.inStock}
+                          onClick={() => { router.push(`/contact`) }} // เปลี่ยนเป็นฟังก์ชันที่ต้องการเมื่อคลิก
                         >
                           {product.inStock ? (
                             <>
