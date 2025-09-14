@@ -113,14 +113,14 @@ export default function Contact() {
     {
       icon: Phone,
       title: "โทรศัพท์",
-      details: ["02-123-4567", "02-123-4568"],
+      details: ["Mobile : 081-066-7469", "Mobile : 091-688-2269", "Tel : 034-406-710"],
       subtitle: "สายด่วนฝ่ายขาย",
       color: "from-blue-500 to-blue-600",
     },
     {
       icon: Mail,
       title: "อีเมล",
-      details: ["info@tripleworld.co.th", "sales@tripleworld.co.th"],
+      details: ["tripleworld.th@gmail.com", "tripleworld2015@gmail.com"],
       subtitle: "ตอบกลับภายใน 24 ชั่วโมง",
       color: "from-green-500 to-green-600",
     },
@@ -128,9 +128,8 @@ export default function Contact() {
       icon: MapPin,
       title: "ที่อยู่สำนักงาน",
       details: [
-        "123/45 อาคารไทยซัมมิท ทาวเวอร์",
-        "ถนนสีลม แขวงสีลม เขตบางรัก",
-        "กรุงเทพมหานคร 10500",
+        "64/66 หมู่ที่ 3 ต.คลองมะเดื่ออ.กระทุ่มแบน จ.สมุทรสาคร 74110",
+        "64/66 Moo 3 Klongmaduea, Krathumban, Samutsakhon 74110 Thailand.",
       ],
       subtitle: "สำนักงานใหญ่",
       color: "from-red-500 to-red-600",
@@ -140,7 +139,7 @@ export default function Contact() {
       title: "เวลาทำการ",
       details: [
         "จันทร์ - ศุกร์: 8:00 - 17:00",
-        "เสาร์: 8:00 - 12:00",
+        "เสาร์: 8:00 - 16:00",
         "อาทิทย์: ปิด",
       ],
       subtitle: "เวลาประเทศไทย",
@@ -150,23 +149,23 @@ export default function Contact() {
 
   const branches = [
     {
-      name: "สาขากรุงเทพฯ (สำนักงานใหญ่)",
+      name: "สาขาสมุทรสาคร (สำนักงานใหญ่)",
       address:
-        "123/45 อาคารไทยซัมมิท ทาวเวอร์ ถนนสีลม แขวงสีลม เขตบางรัก กรุงเทพมหานคร 10500",
-      phone: "02-123-4567",
-      manager: "นางสาวรัตนา เทคโนโลยี",
+        "64/66 หมู่ที่ 3 ต.คลองมะเดื่อ อ.กระทุ่มแบน จ.สมุทรสาคร 74110 64/66 Moo 3 Klongmaduea, Krathumban, Samutsakhon 74110 Thailand.",
+      phone: "081-066-7469, 091-688-2269",
+      manager: "คุณไตรภพ",
     },
     {
-      name: "สาขาชลบุรี",
-      address: "88/99 หมู่ 5 ตำบลบ้านสวน อำเภอเมือง จังหวัดชลบุรี 20000",
-      phone: "038-456-789",
-      manager: "นายสมศักดิ์ อุตสาหกรรม",
+      name: "สาขา สปป.ลาว (Tripleworld Laos)",
+      address: "-",
+      phone: "+856-81-251-5852",
+      manager: "คุณสันติชัย ",
     },
     {
-      name: "สาขาสงขลา",
-      address: "55/77 ถนนราชดำเนิน ตำบลบ่อยาง อำเภอเมือง จังหวัดสงขลา 90000",
-      phone: "074-123-456",
-      manager: "นางสาวพิมพ์ใจ ภาคใต้",
+      name: "",
+      address: "",
+      phone: "",
+      manager: "",
     },
   ];
 
@@ -239,7 +238,7 @@ export default function Contact() {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              พร้อมให้คำปรึกษาและบริการด้วยทีมงานมืออาชีพ 24/7
+              พร้อมให้คำปรึกษาและบริการด้วยทีมงานมืออาชีพ
             </p>
           </div>
         </div>
@@ -642,7 +641,7 @@ export default function Contact() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12">
+      {/* <footer className="bg-gray-900 text-gray-300 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-3 mb-4">
@@ -660,7 +659,7 @@ export default function Contact() {
             </div>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

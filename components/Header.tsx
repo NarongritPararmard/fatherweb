@@ -38,7 +38,7 @@ export default function Header() {
             </div>
             <div className="hidden sm:block">
               <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent group-hover:from-blue-600 group-hover:to-blue-500 transition-all duration-300">
-                Triple World
+                Triple World (Thailand)
               </h1>
               <p className="text-xs md:text-sm text-gray-600 font-medium">
                 Food Chemical Supplier

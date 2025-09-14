@@ -91,7 +91,7 @@ export default function Home() {
               <span className="text-white">คุณภาพสูง</span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              ผู้จำหน่ายเคมีอาหารชั้นนำ สำหรับอุตสาหกรรมและงานวิจัย
+              ผู้นำเข้าและจำหน่ายเคมีอาหาร สำหรับอุตสาหกรรมและงานวิจัย
               พร้อมบริการครบครัน
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -99,7 +99,10 @@ export default function Home() {
                 ดูสินค้าทั้งหมด
                 <ChevronRight className="inline ml-2 w-5 h-5" />
               </button>
-              <button className="px-8 py-4 border-2 border-white text-white rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300">
+              <button 
+                className="px-8 py-4 border-2 border-white text-white rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300"
+                onClick={() => router.push('/contact')}
+              >
                 ติดต่อเรา
               </button>
             </div>
@@ -268,11 +271,11 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 mb-8">
             <div className="flex items-center space-x-3">
               <Phone className="w-6 h-6" />
-              <span className="text-lg">02-xxx-xxxx</span>
+              <span className="text-lg">081-066-7469</span>
             </div>
             <div className="flex items-center space-x-3">
               <Mail className="w-6 h-6" />
-              <span className="text-lg">info@tripleworld.co.th</span>
+              <span className="text-lg">tripleworld.th@gmail.com</span>
             </div>
           </div>
           <button className="px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-lg">
@@ -282,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12">
+      {/* <footer className="bg-gray-900 text-gray-300 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
@@ -359,7 +362,7 @@ export default function Home() {
             <p>&copy; 2025 Triple World Co., Ltd. สงวนลิขสิทธิ์</p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }
