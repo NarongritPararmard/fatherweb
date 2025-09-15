@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const router = useRouter()
   const [categories, setCategories] = useState([])
+  const highlight1 = process.env.NEXT_PUBLIC_PATH_HIGHLIGHT_1;
 
   const fetchCategories = async () => {
     try {
@@ -79,33 +80,85 @@ export default function Home() {
       </header> */}
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <section className="relative bg-gradient-to-br from-blue-100 via-blue-800 to-indigo-900 text-white overflow-hidden">
+        {/* ✅ รูปพื้นหลัง */}
+        <div className="absolute inset-0">
+          <img
+            src={process.env.NEXT_PUBLIC_PATH_HIGHLIGHT_1}
+            alt="Highlight background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black opacity-0"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="text-center">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-white">
-                เคมีอาหาร
-              </span>
               <br />
-              <span className="text-white">คุณภาพสูง</span>
+              <br />
+              <br />
+              <br />
+              <br />
+              <br />
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              ผู้นำเข้าและจำหน่ายเคมีอาหาร สำหรับอุตสาหกรรมและงานวิจัย
-              พร้อมบริการครบครัน
-            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button onClick={() => router.push('/products')} className="px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-lg">
+              <button
+                onClick={() => router.push("/products")}
+                className="px-8 py-4 bg-white text-blue-900 text-2xl rounded-xl font-semibold hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-lg"
+              >
                 ดูสินค้าทั้งหมด
                 <ChevronRight className="inline ml-2 w-5 h-5" />
               </button>
-              <button 
-                className="px-8 py-4 border-2 border-white text-white rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300"
-                onClick={() => router.push('/contact')}
+              <button
+                className="px-8 py-4 border-2 border-white text-white text-2xl rounded-xl font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300"
+                onClick={() => router.push("/contact")}
               >
                 ติดต่อเรา
               </button>
             </div>
+            <br />
+            <br />
+            <br />
+            <br />
+            {/* <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto stroke-black">
+              ผู้นำเข้าและจำหน่ายเคมีอาหาร สำหรับอุตสาหกรรมอาหารและเครื่องดื่มพร้อมทีมผู้เชี่ยวชาญให้คำปรึกษาและพัฒนาผลิตภัณฑ์ตามความต้องการของลูกค้า
+            </p> */}
+            <p
+              className="text-xl md:text-2xl text-black"
+              style={{
+                textShadow: `
+                  2px 2px 0 white,
+                  -2px 2px 0 white,
+                  2px -2px 0 white,
+                  -2px -2px 0 white,
+                  2px 0 0 white,
+                  0 2px 0 white,
+                  -2px 0 0 white,
+                  0 -2px 0 white
+                `
+              }}
+            >
+              ผู้นำเข้าและจำหน่ายเคมีอาหาร สำหรับอุตสาหกรรมอาหารและเครื่องดื่ม
+            </p>
+
+            <p
+              className="text-xl md:text-2xl text-black"
+              style={{
+                textShadow: `
+                  2px 2px 0 white,
+                  -2px 2px 0 white,
+                  2px -2px 0 white,
+                  -2px -2px 0 white,
+                  2px 0 0 white,
+                  0 2px 0 white,
+                  -2px 0 0 white,
+                  0 -2px 0 white
+                `
+              }}
+            >
+              พร้อมทีมผู้เชี่ยวชาญให้คำปรึกษาและพัฒนาผลิตภัณฑ์ตามความต้องการของลูกค้า
+            </p>
+            <br />
           </div>
         </div>
 
@@ -177,15 +230,15 @@ export default function Home() {
                   className="group relative p-8 bg-white border-2 border-gray-100 rounded-2xl text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer overflow-hidden"
                 >
                   <div
-                  className={`absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-                ></div>
-                <div className="relative">
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
-                    {item.name}
-                  </h3>
-                  {/* <p className="text-sm text-gray-600">{item.desc}</p> */}
+                    className={`absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-600 opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                  ></div>
+                  <div className="relative">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      {item.name}
+                    </h3>
+                    {/* <p className="text-sm text-gray-600">{item.desc}</p> */}
+                  </div>
                 </div>
-              </div>
               </a>
             ))}
           </div>
@@ -231,13 +284,12 @@ export default function Home() {
               >
                 <div className="absolute top-4 right-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      product.badge === "ขายดี"
-                        ? "bg-red-100 text-red-600"
-                        : product.badge === "แนะนำ"
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${product.badge === "ขายดี"
+                      ? "bg-red-100 text-red-600"
+                      : product.badge === "แนะนำ"
                         ? "bg-blue-100 text-blue-600"
                         : "bg-green-100 text-green-600"
-                    }`}
+                      }`}
                   >
                     {product.badge}
                   </span>
@@ -262,7 +314,7 @@ export default function Home() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-20 bg-gradient-to-r from-blue-800 to-indigo-900 text-white">
+      <section className="py-20 bg-gradient-to-r from-orange-500 to-indigo-10 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-6">พร้อมให้บริการคุณ</h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -278,7 +330,10 @@ export default function Home() {
               <span className="text-lg">tripleworld.th@gmail.com</span>
             </div>
           </div>
-          <button className="px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-lg">
+          <button
+            className="px-8 py-4 bg-white text-blue-900 rounded-xl font-semibold hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-lg"
+            onClick={() => router.push('/contact')}
+          >
             ติดต่อเราวันนี้
           </button>
         </div>

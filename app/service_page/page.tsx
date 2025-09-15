@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { Award, Users, Globe, Target, Eye, Heart, CheckCircle, TrendingUp, Shield, Zap, Building, Calendar } from "lucide-react";
-export default function AboutUs() {
+export default function ServicePage() {
 
   const router = useRouter();
 
@@ -106,7 +106,7 @@ export default function AboutUs() {
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 to-white">
-                เกี่ยวกับเรา
+                บริการของเรา
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
