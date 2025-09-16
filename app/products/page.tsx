@@ -313,70 +313,93 @@ function ProductsContent() {
     fetchCategories()
   }, [])
 
-  return (
-    <div className="min-h-screen bg-gray-50">
+return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-amber-50">
       
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-r from-orange-400 via-orange-300 to-amber-400 text-white py-20 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='m0 40l40-40h-40v40zm40 0v-40h-40l40 40z'/%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">สินค้าเคมีอาหาร</h1>
-            <p className="text-xl text-blue-100 mb-8">ครบครันในที่เดียว คุณภาพมาตรฐานสากล</p>
-            <div className="flex justify-center">
-              <div className="bg-white rounded-lg p-2 flex items-center max-w-md w-full">
-                <Search className="w-5 h-5 text-gray-400 mx-3" />
+            <div className="inline-flex items-center px-6 py-3 bg-white/25 backdrop-blur-sm rounded-full text-orange-50 text-sm font-medium mb-6 border border-white/30">
+              ✨ คุณภาพมาตรฐานสากล ISO & FDA
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+              สินค้า<span className="text-amber-200">เคมีอาหาร</span>
+            </h1>
+            <p className="text-xl sm:text-2xl text-orange-50 mb-10 max-w-3xl mx-auto leading-relaxed">
+              ครบครันในที่เดียว คุณภาพระดับโลก ส่งตรงถึงมือคุณ
+            </p>
+            
+            <div className="flex justify-center max-w-2xl mx-auto">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-3 flex items-center w-full shadow-2xl border border-white/20">
+                <Search className="w-6 h-6 text-orange-400 mx-4 flex-shrink-0" />
                 <input
                   type="text"
-                  placeholder="ค้นหาสินค้า..."
-                  className="flex-1 py-2 px-2 text-gray-700 focus:outline-none"
+                  placeholder="ค้นหาสินค้าที่ต้องการ..."
+                  className="flex-1 py-3 px-2 text-gray-700 placeholder-gray-500 focus:outline-none text-lg bg-transparent"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
+                <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg">
+                  ค้นหา
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex flex-col xl:flex-row gap-8">
           {/* Sidebar */}
-          <div className="lg:w-1/4">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-24">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">ตัวกรอง</h3>
-                <button
-                  className="lg:hidden"
-                  onClick={() => setShowFilters(!showFilters)}
-                >
-                  <Filter className="w-5 h-5" />
-                </button>
+          <div className="xl:w-1/4">
+            <div className="bg-white rounded-2xl shadow-lg border border-orange-100 overflow-hidden sticky top-24">
+              <div className="bg-gradient-to-r from-orange-400 to-orange-500 p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white flex items-center">
+                    <Filter className="w-6 h-6 mr-3" />
+                    ตัวกรอง
+                  </h3>
+                  <button
+                    className="xl:hidden bg-white/20 p-2 rounded-lg hover:bg-white/30 transition-colors"
+                    onClick={() => setShowFilters(!showFilters)}
+                  >
+                    <Filter className="w-5 h-5 text-white" />
+                  </button>
+                </div>
               </div>
 
-              <div className={`space-y-6 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+              <div className={`p-6 space-y-6 ${showFilters ? 'block' : 'hidden xl:block'}`}>
                 {/* Categories */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">หมวดหมู่</h4>
+                  <h4 className="font-bold text-gray-900 mb-4 text-lg">หมวดหมู่สินค้า</h4>
                   <div className="space-y-2">
                     <button
                       onClick={() => setSelectedCategory("ทั้งหมด")}
-                      className={`block w-full text-left px-3 py-2 rounded-lg transition ${selectedCategory === "ทั้งหมด"
-                        ? 'bg-blue-50 text-blue-600 font-medium'
-                        : 'text-gray-600 hover:bg-gray-50'
+                                              className={`block w-full text-left px-4 py-3 rounded-xl transition-all duration-300 font-medium ${selectedCategory === "ทั้งหมด"
+                        ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-lg transform scale-105'
+                        : 'text-gray-700 hover:bg-orange-50 hover:text-orange-500 border border-gray-200 hover:border-orange-300'
                         }`}
                     >
-                      ทั้งหมด
+                      🎯 ทั้งหมด
                     </button>
                     {categories.map((category: any) => (
                       <button
                         key={category.id}
                         onClick={() => setSelectedCategory(category.name)}
-                        className={`block w-full text-left px-3 py-2 rounded-lg transition ${selectedCategory === category.name
-                          ? 'bg-blue-50 text-blue-600 font-medium'
-                          : 'text-gray-600 hover:bg-gray-50'
+                        className={`block w-full text-left px-4 py-3 rounded-xl transition-all duration-300 font-medium ${selectedCategory === category.name
+                          ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white shadow-lg transform scale-105'
+                          : 'text-gray-700 hover:bg-orange-50 hover:text-orange-500 border border-gray-200 hover:border-orange-300'
                           }`}
                       >
-                        {category.name}
+                        📦 {category.name}
                       </button>
                     ))}
                   </div>
@@ -384,105 +407,123 @@ function ProductsContent() {
 
                 {/* Sort */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-3">เรียงตาม</h4>
+                  <h4 className="font-bold text-gray-900 mb-4 text-lg">เรียงลำดับ</h4>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full p-2 text-gray-500 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full p-4 text-gray-700 border-2 border-orange-200 rounded-xl focus:ring-4 focus:ring-orange-100 focus:border-orange-400 bg-white transition-all duration-300 font-medium"
                   >
-                    <option value="name">ชื่อ A-Z</option>
-                    <option value="price-low">ราคาต่ำสุด</option>
-                    <option value="price-high">ราคาสูงสุด</option>
+                    <option value="name">🔤 ชื่อ A-Z</option>
+                    <option value="price-low">💰 ราคาต่ำสุด</option>
+                    <option value="price-high">💎 ราคาสูงสุด</option>
                   </select>
+                </div>
+
+                {/* Stats Card */}
+                <div className="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-4 border-2 border-orange-100">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-orange-500 mb-1">{sortedProducts.length}</div>
+                    <div className="text-orange-600 font-medium">รายการสินค้า</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Main Content */}
-          <div className="lg:w-3/4">
+          <div className="xl:w-3/4">
             {/* Results Header */}
-            <div className="flex justify-between items-center mb-6">
-              <p className="text-gray-600">
-                แสดงผล {sortedProducts.length} รายการ
-                {selectedCategory !== "ทั้งหมด" && ` ใน "${selectedCategory}"`}
-              </p>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  {selectedCategory !== "ทั้งหมด" ? selectedCategory : "สินค้าทั้งหมด"}
+                </h2>
+                <p className="text-gray-600 flex items-center">
+                  <Package className="w-5 h-5 mr-2 text-orange-400" />
+                  พบ {sortedProducts.length} รายการ
+                  {selectedCategory !== "ทั้งหมด" && (
+                    <span className="ml-2 px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-medium">
+                      {selectedCategory}
+                    </span>
+                  )}
+                </p>
+              </div>
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
               {sortedProducts.map((product: Product) => (
-                <div key={product.id} className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden border border-gray-100 hover:border-blue-200">
+                <div key={product.id} className="group bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 overflow-hidden border-2 border-orange-100 hover:border-orange-300 relative">
                   {/* Product Image */}
-                  <div className="relative overflow-hidden bg-gradient-to-br from-slate-50 to-blue-50">
-                    <div className="h-56 flex items-center justify-center relative">
+                  <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+                    <div className="h-64 flex items-center justify-center relative p-6">
                       <img
                         src={product.imageUrl || '/placeholder.png'}
                         alt={product.name}
-                        className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 drop-shadow-lg"
                       />
                       
-                      {/* Subtle overlay for better image presentation */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent pointer-events-none"></div>
+                      {/* Animated overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-white/30 via-transparent to-transparent pointer-events-none group-hover:from-orange-100/20 transition-all duration-500"></div>
                     </div>
 
                     {/* Badge */}
                     {product.badge && (
-                      <span className={`absolute top-4 left-4 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg backdrop-blur-sm ${
-                        product.badge === 'ขายไม่ดี' ? 'bg-red-500/90 text-white' :
-                        product.badge === 'แนะนำ' ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' :
-                        'bg-gradient-to-r from-emerald-500 to-green-600 text-white'
+                      <span className={`absolute top-4 left-4 px-4 py-2 rounded-full text-xs font-bold shadow-2xl backdrop-blur-md border-2 ${
+                        product.badge === 'ขายไม่ดี' ? 'bg-red-500/90 text-white border-red-300' :
+                        product.badge === 'แนะนำ' ? 'bg-gradient-to-r from-orange-400 to-orange-500 text-white border-orange-300' :
+                        'bg-gradient-to-r from-emerald-500 to-green-600 text-white border-green-300'
                       }`}>
-                        {product.badge}
+                        ⭐ {product.badge}
                       </span>
                     )}
 
                     {/* Out of Stock Overlay */}
                     {!product.inStock && (
-                      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                        <div className="bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold shadow-2xl border-2 border-white/20">
-                          สินค้าหมด
+                      <div className="absolute inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center">
+                        <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-2xl border-4 border-white/30 transform rotate-12">
+                          🚫 สินค้าหมด
                         </div>
                       </div>
                     )}
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-6 space-y-4">
+                  <div className="p-6 space-y-5">
                     {/* Category and Rating */}
                     <div className="flex items-center justify-between">
-                      <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-100">
-                        {product.category?.name || 'ไม่ระบุหมวดหมู่'}
+                      <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-100 to-amber-100 text-orange-800 text-sm font-bold rounded-full border-2 border-orange-200">
+                        📂 {product.category?.name || 'ไม่ระบุหมวดหมู่'}
                       </span>
-                      <div className="flex items-center space-x-1">
-                        <div className="flex space-x-0.5">
+                      <div className="flex items-center space-x-1 bg-amber-50 px-3 py-2 rounded-full border border-amber-200">
+                        <div className="flex space-x-1">
                           {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                           ))}
                         </div>
-                        <span className="text-xs text-gray-500 ml-1">(4.8)</span>
+                        <span className="text-sm text-amber-700 font-semibold ml-2">(4.8)</span>
                       </div>
                     </div>
 
                     {/* Product Name */}
-                    <h3 className="font-bold text-gray-900 text-lg leading-tight line-clamp-2 group-hover:text-blue-700 transition-colors">
+                    <h3 className="font-bold text-gray-900 text-xl leading-tight line-clamp-2 group-hover:text-orange-600 transition-colors duration-300">
                       {product.name}
                     </h3>
 
                     {/* Description */}
-                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
+                    <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
                       {product.description}
                     </p>
 
                     {/* Price Section */}
-                    <div className="pt-2 border-t border-gray-100">
-                      <div className="flex items-end justify-between mb-4">
-                        <div className="flex items-baseline space-x-1">
-                          <span className="text-3xl font-bold text-blue-600">
+                    <div className="pt-4 border-t-2 border-orange-100">
+                      <div className="flex items-end justify-between mb-6">
+                        <div className="flex items-baseline space-x-2">
+                          <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">
                             ฿{product.price?.toLocaleString() || 'ติดต่อ'}
                           </span>
                           {product.unit && (
-                            <span className="text-gray-500 text-sm font-medium">
+                            <span className="text-gray-500 text-base font-semibold">
                               /{product.unit}
                             </span>
                           )}
@@ -492,27 +533,27 @@ function ProductsContent() {
                       {/* Action Buttons */}
                       <div className="flex items-center space-x-3">
                         <button 
-                          className="flex-shrink-0 p-3 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-xl transition-all duration-300 hover:scale-110 border border-gray-200 hover:border-blue-200"
+                          className="flex-shrink-0 p-4 bg-gradient-to-r from-orange-100 to-amber-100 hover:from-orange-200 hover:to-amber-200 text-orange-500 hover:text-orange-600 rounded-2xl transition-all duration-300 hover:scale-110 border-2 border-orange-200 hover:border-orange-300 shadow-lg hover:shadow-xl"
                           onClick={() => openProductModal(product)}
                         >
-                          <Eye className="w-5 h-5" />
+                          <Eye className="w-6 h-6" />
                         </button>
                         
                         <button
-                          className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-xl font-semibold transition-all duration-300 ${
+                          className={`flex-1 flex items-center justify-center space-x-3 py-4 px-6 rounded-2xl font-bold transition-all duration-300 text-lg ${
                             product.inStock
-                              ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl transform hover:scale-105'
-                              : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                              ? 'bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:from-orange-500 hover:via-orange-600 hover:to-orange-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 border-2 border-transparent hover:border-orange-300'
+                              : 'bg-gray-200 text-gray-500 cursor-not-allowed border-2 border-gray-300'
                           }`}
                           onClick={() => { router.push(`/contact`) }}
                         >
                           {product.inStock ? (
                             <>
-                              <ShoppingCart className="w-5 h-5" />
-                              <span>สอบถามราคา</span>
+                              <ShoppingCart className="w-6 h-6" />
+                              <span>💬 สอบถาม</span>
                             </>
                           ) : (
-                            <span>สินค้าหมด</span>
+                            <span>❌ สินค้าหมด</span>
                           )}
                         </button>
                       </div>
@@ -524,10 +565,20 @@ function ProductsContent() {
 
             {/* Empty State */}
             {sortedProducts.length === 0 && (
-              <div className="text-center py-12">
-                <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">ไม่พบสินค้า</h3>
-                <p className="text-gray-600">ลองเปลี่ยนเงื่อนไขการค้นหาหรือหมวดหมู่</p>
+              <div className="text-center py-20">
+                <div className="bg-gradient-to-br from-orange-100 to-amber-100 w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-8 border-4 border-orange-200">
+                  <Package className="w-16 h-16 text-orange-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">🔍 ไม่พบสินค้าที่ต้องการ</h3>
+                <p className="text-gray-600 text-lg max-w-md mx-auto leading-relaxed">
+                  ลองเปลี่ยนเงื่อนไขการค้นหาหรือเลือกหมวดหมู่อื่น
+                </p>
+                <button 
+                  onClick={() => {setSelectedCategory("ทั้งหมด"); setSearchTerm("");}}
+                  className="mt-6 bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 hover:scale-105 shadow-lg"
+                >
+                  🔄 รีเซ็ตการค้นหา
+                </button>
               </div>
             )}
           </div>
@@ -542,59 +593,75 @@ function ProductsContent() {
       />
 
       {/* Features Section */}
-      <section className="bg-white py-16 mt-16">
+      <section className="bg-gradient-to-br from-white via-orange-50 to-amber-50 py-20 mt-20 border-t-4 border-orange-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">ทำไมต้องเลือก Triple World</h2>
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white rounded-full font-bold mb-6 shadow-lg">
+              ⭐ ทำไมต้องเลือกเรา
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              ทำไมต้องเลือก <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">Triple World</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              เรามีความมุ่งมั่นในการให้บริการที่ดีที่สุดแก่ลูกค้าทุกท่าน
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="w-8 h-8 text-blue-600" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            <div className="group text-center p-8 bg-white rounded-3xl shadow-lg border-2 border-orange-100 hover:border-orange-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <div className="w-20 h-20 bg-gradient-to-r from-orange-400 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                <Award className="w-10 h-10 text-white" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">คุณภาพมาตรฐาน</h3>
-              <p className="text-gray-600 text-sm">ผลิตภัณฑ์ได้มาตรฐาน ISO และ FDA</p>
+              <h3 className="font-bold text-gray-900 mb-4 text-xl">🏆 คุณภาพมาตรฐาน</h3>
+              <p className="text-gray-600 leading-relaxed">
+                ผลิตภัณฑ์ทุกชิ้นได้รับการรับรองมาตรฐาน ISO และ FDA 
+                พร้อมใบรับรองคุณภาพครบถ้วน
+              </p>
             </div>
 
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-8 h-8 text-green-600" />
+            <div className="group text-center p-8 bg-white rounded-3xl shadow-lg border-2 border-orange-100 hover:border-orange-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                <Truck className="w-10 h-10 text-white" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">จัดส่งรวดเร็ว</h3>
-              <p className="text-gray-600 text-sm">ส่งถึงมือคุณภายใน 1-3 วันทำการ</p>
+              <h3 className="font-bold text-gray-900 mb-4 text-xl">🚀 จัดส่งรวดเร็ว</h3>
+              <p className="text-gray-600 leading-relaxed">
+                ระบบจัดส่งที่ทันสมัย ส่งถึงมือคุณภายใน 1-3 วันทำการ 
+                ทั่วประเทศไทย
+              </p>
             </div>
 
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Phone className="w-8 h-8 text-orange-600" />
+            <div className="group text-center p-8 bg-white rounded-3xl shadow-lg border-2 border-orange-100 hover:border-orange-300 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-xl">
+                <Phone className="w-10 h-10 text-white" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">บริการหลังการขาย</h3>
-              <p className="text-gray-600 text-sm">ทีมงานผู้เชี่ยวชาญพร้อมให้คำปรึกษา</p>
+              <h3 className="font-bold text-gray-900 mb-4 text-xl">💬 บริการหลังการขาย</h3>
+              <p className="text-gray-600 leading-relaxed">
+                ทีมงานผู้เชี่ยวชาญพร้อมให้คำปรึกษาและแก้ไขปัญหา
+                ตลอด 24 ชั่วโมง
+              </p>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center mt-16">
+            <div className="bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-3xl p-8 lg:p-12 text-white relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse"></div>
+              <div className="relative z-10">
+                <h3 className="text-3xl lg:text-4xl font-bold mb-4">🎯 พร้อมเริ่มต้นแล้วใช่มั้ย?</h3>
+                <p className="text-xl text-orange-50 mb-8 max-w-2xl mx-auto">
+                  ติดต่อเราวันนี้เพื่อสอบถามข้อมูลเพิ่มเติมและรับใบเสนอราคาพิเศษ
+                </p>
+                <button 
+                  onClick={() => { router.push(`/contact`) }}
+                  className="bg-white text-orange-500 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-orange-50 transition-all duration-300 hover:scale-105 shadow-2xl border-4 border-white/20 hover:border-white/40"
+                >
+                  📞 ติดต่อเราเลย
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      {/* <footer className="bg-gray-900 text-gray-300 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center space-x-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold">TW</span>
-              </div>
-              <h3 className="text-xl font-bold text-white">Triple World</h3>
-            </div>
-            <p className="text-gray-400 mb-4">
-              ผู้จำหน่ายเคมีอาหารคุณภาพสูง ให้บริการอุตสาหกรรมอาหารและเครื่องดื่ม
-            </p>
-            <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-gray-500">
-              <p>&copy; 2025 Triple World Co., Ltd. สงวนลิขสิทธิ์</p>
-            </div>
-          </div>
-        </div>
-      </footer> */}
     </div>
   );
 }
