@@ -91,13 +91,28 @@ export default function Home() {
           <div className="absolute inset-0 bg-black opacity-0"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="text-center">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               <br />
               <br />
-              <br />
-              <br />
+              <p
+                className="text-xl md:text-7xl text-black"
+                style={{
+                  textShadow: `
+                  4px 4px 0 white,
+                  -4px 4px 0 white,
+                  4px -4px 0 white,
+                  -4px -4px 0 white,
+                  4px 0 0 white,
+                  0 4px 0 white,
+                  -4px 0 0 white,
+                  0 -4px 0 white
+                `
+                }}
+              >
+                บริษัทนำเข้าและจำหน่ายเคมีอาหารวัตถุเจือปนอาหาร สารปรุงแต่ง
+              </p>
               <br />
               <br />
             </h1>
