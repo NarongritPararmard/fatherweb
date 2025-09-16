@@ -34,82 +34,81 @@ function ProductDetailModal({ product, isOpen, onClose }: { product: Product | n
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       ></div>
 
       {/* Modal */}
-      <div className="flex min-h-full items-center justify-center p-4">
-        <div className="relative bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div className="flex min-h-full items-center justify-center p-2">
+        <div className="relative bg-white rounded-3xl shadow-2xl max-w-3xl w-full h-[80vh] flex flex-col overflow-hidden border-4 border-orange-200">
           
           {/* Header */}
-          <div className="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6">
+          <div className="relative bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 text-white p-5">
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-full transition-colors"
+              className="absolute top-6 right-6 p-3 hover:bg-white/20 rounded-2xl transition-all duration-300 border-2 border-white/30 hover:border-white/50 hover:scale-110"
             >
               <X className="w-6 h-6" />
             </button>
             
             {product.badge && (
-              <span className={`inline-block px-4 py-2 rounded-full text-sm font-bold mb-4 ${
-                product.badge === 'ขายไม่ดี' ? 'bg-red-500/90' :
-                product.badge === 'แนะนำ' ? 'bg-blue-500/90' :
-                'bg-green-500/90'
+              <span className={`inline-block px-6 py-3 rounded-2xl text-sm font-bold mb-6 shadow-lg backdrop-blur-md border-2 ${
+                product.badge === 'แนะนำ' ? 'bg-white/20 border-white/30' :
+                'bg-emerald-500/90 border-emerald-300'
               }`}>
-                {product.badge}
+                ⭐ {product.badge}
               </span>
             )}
             
-            <h2 className="text-3xl font-bold mb-2 pr-12">{product.name}</h2>
-            <div className="flex items-center space-x-4 text-blue-100">
-              <span className="px-3 py-1 bg-white/20 rounded-full text-sm font-medium">
-                {product.category?.name || 'ไม่ระบุหมวดหมู่'}
+            <h2 className="text-xl font-black mb-4 pr-16 leading-tight tracking-tight">{product.name}</h2>
+            <div className="flex items-center space-x-6 text-orange-50">
+              <span className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-2xl text-sm font-bold border-2 border-white/30">
+                📂 {product.category?.name || 'ไม่ระบุหมวดหมู่'}
               </span>
-              <div className="flex items-center space-x-1">
-                <div className="flex space-x-0.5">
+              <div className="flex items-center space-x-2 bg-white/20 backdrop-blur-md rounded-2xl px-4 py-2 border-2 border-white/30">
+                <div className="flex space-x-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <Star key={i} className="w-5 h-5 fill-amber-300 text-amber-300" />
                   ))}
                 </div>
-                <span className="text-sm ml-1">(4.8)</span>
+                <span className="text-sm font-bold ml-2">(4.8)</span>
               </div>
             </div>
           </div>
 
           {/* Content */}
-          <div className="overflow-y-auto max-h-[calc(90vh-200px)]">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8">
+          <div className="flex-1 overflow-y-auto p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
               
               {/* Product Image */}
-              <div className="space-y-6">
-                <div className="relative bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl overflow-hidden">
-                  <div className="aspect-square flex items-center justify-center p-8">
+              <div className="space-y-8">
+                <div className="relative bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 rounded-3xl overflow-hidden border-4 border-orange-100">
+                  <div className="aspect-square flex items-center justify-center p-4">
                     <img
                       src={product.imageUrl || '/placeholder.png'}
                       alt={product.name}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain drop-shadow-xl"
                     />
                   </div>
                   
                   {!product.inStock && (
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                      <div className="bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold">
-                        สินค้าหมด
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center">
+                      <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-2xl border-4 border-white/30 transform rotate-12">
+                        🚫 สินค้าหมด
                       </div>
                     </div>
                   )}
                 </div>
 
                 {/* Price Section */}
-                <div className="bg-gray-50 rounded-2xl p-6">
-                  <div className="flex items-end justify-between mb-4">
-                    <div className="flex items-baseline space-x-1">
-                      <span className="text-4xl font-bold text-blue-600">
-                        ฿{product.price?.toLocaleString() || 'ติดต่อสอบถาม'}
+                <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-3xl p-4 border-4 border-orange-100">
+                  <div className="flex items-end justify-between mb-6">
+                    <div className="flex items-baseline space-x-2">
+                      <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">
+                        ฿{product.price?.toLocaleString() || 'ติดต่อ'}
                       </span>
                       {product.unit && (
-                        <span className="text-gray-500 text-lg font-medium">
+                        <span className="text-gray-500 text-xl font-bold">
                           /{product.unit}
                         </span>
                       )}
@@ -117,37 +116,37 @@ function ProductDetailModal({ product, isOpen, onClose }: { product: Product | n
                   </div>
                   
                   <button
-                    className={`w-full flex items-center justify-center space-x-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 ${
+                    className={`w-full flex items-center justify-center space-x-4 py-5 px-8 rounded-2xl font-black text-lg transition-all duration-300 border-4 ${
                       product.inStock
-                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-lg hover:shadow-xl'
-                        : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        ? 'bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:from-orange-500 hover:via-orange-600 hover:to-orange-700 text-white shadow-xl hover:shadow-2xl hover:scale-105 border-orange-300 hover:border-orange-400'
+                        : 'bg-gray-200 text-gray-500 cursor-not-allowed border-gray-300'
                     }`}
                     disabled={!product.inStock}
                     onClick={() => { window.location.href = '/contact' }}
                   >
                     {product.inStock ? (
                       <>
-                        <ShoppingCart className="w-6 h-6" />
-                        <span className="text-lg">สอบถามราคา</span>
+                        <ShoppingCart className="w-7 h-7" />
+                        <span className="text-xl">💬 สอบถามราคา</span>
                       </>
                     ) : (
-                      <span className="text-lg">สินค้าหมด</span>
+                      <span className="text-xl">❌ สินค้าหมด</span>
                     )}
                   </button>
                 </div>
               </div>
 
               {/* Product Details */}
-              <div className="space-y-6">
+              <div className="space-y-8">
                 
                 {/* Description */}
                 {product.description && (
-                  <div>
-                    <h3 className="flex items-center text-xl font-bold text-gray-900 mb-3">
-                      <Info className="w-6 h-6 mr-2 text-blue-600" />
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-4 border-4 border-blue-100">
+                    <h3 className="flex items-center text-2xl font-black text-gray-900 mb-4">
+                      <Info className="w-7 h-7 mr-3 text-blue-500" />
                       รายละเอียดสินค้า
                     </h3>
-                    <p className="text-gray-700 leading-relaxed bg-gray-50 rounded-xl p-4">
+                    <p className="text-gray-700 leading-relaxed text-lg font-medium">
                       {product.description}
                     </p>
                   </div>
@@ -155,13 +154,13 @@ function ProductDetailModal({ product, isOpen, onClose }: { product: Product | n
 
                 {/* Chemical Formula */}
                 {product.chemical_formula && (
-                  <div>
-                    <h3 className="flex items-center text-xl font-bold text-gray-900 mb-3">
-                      <FlaskConical className="w-6 h-6 mr-2 text-green-600" />
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-4 border-4 border-green-100">
+                    <h3 className="flex items-center text-2xl font-black text-gray-900 mb-4">
+                      <FlaskConical className="w-7 h-7 mr-3 text-green-500" />
                       สูตรเคมี
                     </h3>
-                    <div className="bg-green-50 border-l-4 border-green-400 rounded-r-xl p-4">
-                      <code className="text-lg font-mono text-green-800 font-semibold">
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border-2 border-green-200">
+                      <code className="text-2xl font-mono text-green-800 font-black">
                         {product.chemical_formula}
                       </code>
                     </div>
@@ -170,56 +169,56 @@ function ProductDetailModal({ product, isOpen, onClose }: { product: Product | n
 
                 {/* Properties */}
                 {product.properties && (
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">คุณสมบัติ</h3>
-                    <div className="bg-blue-50 rounded-xl p-4">
-                      <p className="text-gray-700 leading-relaxed">{product.properties}</p>
+                  <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-3xl p-4 border-4 border-purple-100">
+                    <h3 className="text-2xl font-black text-gray-900 mb-4">⚡ คุณสมบัติ</h3>
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border-2 border-purple-200">
+                      <p className="text-gray-700 leading-relaxed text-lg font-medium">{product.properties}</p>
                     </div>
                   </div>
                 )}
 
                 {/* Packaging */}
                 {product.packaging && (
-                  <div>
-                    <h3 className="flex items-center text-xl font-bold text-gray-900 mb-3">
-                      <Package2 className="w-6 h-6 mr-2 text-orange-600" />
+                  <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-4 border-4 border-amber-100">
+                    <h3 className="flex items-center text-2xl font-black text-gray-900 mb-4">
+                      <Package2 className="w-7 h-7 mr-3 text-amber-500" />
                       บรรจุภัณฑ์
                     </h3>
-                    <div className="bg-orange-50 border border-orange-200 rounded-xl p-4">
-                      <p className="text-gray-700 font-medium">{product.packaging}</p>
+                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 border-2 border-amber-200">
+                      <p className="text-gray-700 font-bold text-lg">{product.packaging}</p>
                     </div>
                   </div>
                 )}
 
                 {/* Additional Info Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 rounded-xl p-4">
-                    <h4 className="font-semibold text-gray-900 mb-2">รหัสสินค้า</h4>
-                    <p className="text-gray-600">#{product.id.toString().padStart(6, '0')}</p>
+                  <div className="bg-gradient-to-br from-gray-50 to-slate-100 rounded-2xl p-4 border-4 border-gray-200">
+                    <h4 className="font-black text-gray-900 mb-2 text-lg">รหัสสินค้า</h4>
+                    <p className="text-gray-600 font-bold text-lg">#{product.id.toString().padStart(6, '0')}</p>
                   </div>
                   
                   {product.unit && (
-                    <div className="bg-gray-50 rounded-xl p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">หน่วยขาย</h4>
-                      <p className="text-gray-600">{product.unit}</p>
+                    <div className="bg-gradient-to-br from-gray-50 to-slate-100 rounded-2xl p-4 border-4 border-gray-200">
+                      <h4 className="font-black text-gray-900 mb-2 text-lg">หน่วยขาย</h4>
+                      <p className="text-gray-600 font-bold text-lg">{product.unit}</p>
                     </div>
                   )}
                   
-                  <div className="bg-gray-50 rounded-xl p-4">
-                    <h4 className="font-semibold text-gray-900 mb-2">สถานะสินค้า</h4>
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                  <div className="bg-gradient-to-br from-gray-50 to-slate-100 rounded-2xl p-4 border-4 border-gray-200">
+                    <h4 className="font-black text-gray-900 mb-2 text-lg">สถานะสินค้า</h4>
+                    <span className={`inline-flex items-center px-4 py-2 rounded-2xl text-base font-black shadow-lg border-2 ${
                       product.inStock 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
+                        ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white border-green-300' 
+                        : 'bg-gradient-to-r from-red-400 to-red-500 text-white border-red-300'
                     }`}>
                       {product.inStock ? '✅ มีสินค้า' : '❌ สินค้าหมด'}
                     </span>
                   </div>
                   
                   {product.createdAt && (
-                    <div className="bg-gray-50 rounded-xl p-4">
-                      <h4 className="font-semibold text-gray-900 mb-2">วันที่เพิ่มสินค้า</h4>
-                      <p className="text-gray-600">
+                    <div className="bg-gradient-to-br from-gray-50 to-slate-100 rounded-2xl p-4 border-4 border-gray-200">
+                      <h4 className="font-black text-gray-900 mb-2 text-lg">วันที่เพิ่มสินค้า</h4>
+                      <p className="text-gray-600 font-bold text-lg">
                         {new Date(product.createdAt).toLocaleDateString('th-TH', {
                           year: 'numeric',
                           month: 'long',
