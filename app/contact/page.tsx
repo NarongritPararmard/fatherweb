@@ -324,9 +324,8 @@ export default function Contact() {
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${
-                          errors.name ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${errors.name ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="กรอกชื่อของคุณ"
                       />
                     </div>
@@ -349,9 +348,8 @@ export default function Contact() {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${
-                          errors.email ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${errors.email ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="example@email.com"
                       />
                     </div>
@@ -376,9 +374,8 @@ export default function Contact() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${
-                          errors.phone ? "border-red-500" : "border-gray-300"
-                        }`}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ${errors.phone ? "border-red-500" : "border-gray-300"
+                          }`}
                         placeholder="02-xxx-xxxx"
                       />
                     </div>
@@ -454,9 +451,8 @@ export default function Contact() {
                       value={formData.message}
                       onChange={handleInputChange}
                       rows={5}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none ${
-                        errors.message ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none ${errors.message ? "border-red-500" : "border-gray-300"
+                        }`}
                       placeholder="กรุณาระบุรายละเอียดที่ต้องการสอบถาม..."
                     ></textarea>
                   </div>
@@ -485,14 +481,16 @@ export default function Contact() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">
                   แผนที่
                 </h3>
-                <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">แผนที่ Google Maps</p>
-                    <p className="text-sm text-gray-400">
-                      สำนักงานใหญ่ Triple World
-                    </p>
-                  </div>
+                <div className="aspect-video rounded-lg overflow-hidden">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3869.7167178429324!2d100.28197990000001!3d13.648334100000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e2bf0043c0b9ef%3A0xe55222e1d636cd29!2sTripleworld%20Thailand!5e0!3m2!1sen!2sth!4v1694858512345!5m2!1sen!2sth"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
                 </div>
               </div>
 
