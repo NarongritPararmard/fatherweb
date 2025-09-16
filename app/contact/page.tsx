@@ -80,33 +80,34 @@ export default function Contact() {
     return newErrors;
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const newErrors = validateForm();
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    // Simulate form submission
-    setShowSuccess(true);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      subject: "",
-      message: "",
-      productInterest: "",
+  try {
+    const response = await fetch(process.env.FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     });
-    setErrors({});
 
-    // Hide success message after 5 seconds
-    setTimeout(() => {
-      setShowSuccess(false);
-    }, 5000);
-  };
+    if (response.ok) {
+      alert("ส่งข้อความสำเร็จ ✅");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        subject: "",
+        message: "",
+        productInterest: "",
+      });
+    } else {
+      alert("ส่งไม่สำเร็จ ❌");
+    }
+  } catch (error) {
+    alert("เกิดข้อผิดพลาด: " + error);
+  }
+};
 
   // --- Data for contact info, branches, etc. (เหมือนของคุณ) ---
   const contactInfo = [
