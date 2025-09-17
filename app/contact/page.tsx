@@ -80,34 +80,34 @@ export default function Contact() {
     return newErrors;
   };
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  try {
-    const response = await fetch(process.env.FORM_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-
-    if (response.ok) {
-      alert("ส่งข้อความสำเร็จ ✅");
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        subject: "",
-        message: "",
-        productInterest: "",
+    try {
+      const response = await fetch("https://formspree.io/f/xkgvlgev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-    } else {
-      alert("ส่งไม่สำเร็จ ❌");
+
+      if (response.ok) {
+        alert("ส่งข้อความสำเร็จ ✅");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          company: "",
+          subject: "",
+          message: "",
+          productInterest: "",
+        });
+      } else {
+        alert("ส่งไม่สำเร็จ ❌");
+      }
+    } catch (error) {
+      alert("เกิดข้อผิดพลาด: " + error);
     }
-  } catch (error) {
-    alert("เกิดข้อผิดพลาด: " + error);
-  }
-};
+  };
 
   // --- Data for contact info, branches, etc. (เหมือนของคุณ) ---
   const contactInfo = [
